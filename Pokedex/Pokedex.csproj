@@ -34,10 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Pokedex_Hoen.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gabriel.Cat.Wpf">
-      <HintPath>C:\Users\pc\Desktop\Programas\Gabriel.Cat.Wpf\Gabriel.Cat.Wpf\bin\Release\Gabriel.Cat.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -114,6 +114,13 @@
       <Project>{398759e4-4411-4c40-9241-da3962f0c74b}</Project>
       <Name>FrameWorkPokemonGBA</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\pc\Desktop\Programas\Gabriel.Cat.Wpf\Gabriel.Cat.Wpf\Gabriel.Cat.Wpf.csproj">
+      <Project>{3933330c-b76a-4076-92ea-01f7a6dda58e}</Project>
+      <Name>Gabriel.Cat.Wpf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pokedex_Hoen.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

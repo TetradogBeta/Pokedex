@@ -50,6 +50,7 @@
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="45*"/>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="45*"/>
                                 <ColumnDefinition Width="126*"/>
                                 <ColumnDefinition Width="126*"/>
@@ -59,17 +60,19 @@
                                     <RowDefinition Height="32*"/>
                                     <RowDefinition Height="7*"/>
                                 </Grid.RowDefinitions>
-                                <RadioButton Grid.Row="1" x:Name="rbtNormal" IsChecked="True" Checked="rbt_Checked"/>
+                                <RadioButton Grid.Row="1" x:Name="rbtNormal" IsChecked="True" Checked="rbt_Checked" GroupName="paletas"/>
+                                <wpf:ColorTable x:Name="pltNormal" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected" /> 
                             </Grid>
-                            <Grid Grid.Column="1">
+                            <Grid Grid.Column="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="32*"/>
                                     <RowDefinition Height="7*"/>
                                 </Grid.RowDefinitions>
-                                <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked"/>
+                                <wpf:ColorTable x:Name="pltShiny" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected"/>
+                                <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
                             </Grid>
-                            <Image Grid.Column="2" x:Name="imgFrontal"/>
-                            <Image Grid.Column="3" x:Name="imgBack"/>
+                            <Image Grid.Column="3" x:Name="imgFrontal"/>
+                            <Image Grid.Column="4" x:Name="imgBack"/>
                         </Grid>
                     </Grid>
                 </TabItem>

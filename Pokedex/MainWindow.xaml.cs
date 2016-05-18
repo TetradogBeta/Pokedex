@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using Gabriel.Cat.Extension;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Pokedex
 {
@@ -24,7 +25,8 @@ namespace Pokedex
     public partial class MainWindow : Window
     {
         FrameWorkPokemonGBA.RomPokemon rom;
-        FrameWorkPokemonGBA.Pokemon pokemonActual;
+        PokemonPokedex pokemonActual;
+        System.Drawing.Color colorSelected;
         bool hayCambios;
         public MainWindow()
         {
@@ -73,19 +75,24 @@ namespace Pokedex
 
         private void PonPokemon(object sender, EventArgs e)
         {
-            PokemonPokedex pokemonPokedex = sender as PokemonPokedex;
+            
             GuardaDatosPokemon();
-            pokemonActual = pokemonPokedex.Pokemon;
-            txtNamePokemon.Text = pokemonActual.Nombre;
-            imgPokemonPokedex.SetImage(pokemonActual.ImgFrontal.ToBitmap());
+            pokemonActual = sender as PokemonPokedex;
+            txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
+            rbt_Checked(null, null);
+            imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
+            pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
+            pltShiny.Colors = pokemonActual.Pokemon.ImgFrontalShiny.Paleta;
         }
 
         private void GuardaDatosPokemon()
         {
             if(pokemonActual!=null)
             {
-                pokemonActual.Nombre = txtNamePokemon.Text;
+                pokemonActual.Pokemon.Nombre = txtNamePokemon.Text;
                 //poner todos los datos!!
+                pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
+                pokemonActual.Pokemon.ImgFrontalShiny.Paleta = pltShiny.Colors;
             }
         }
 
@@ -107,7 +114,53 @@ namespace Pokedex
 
         private void rbt_Checked(object sender, RoutedEventArgs e)
         {
+            Bitmap bmpImg;
+            if (pokemonActual != null)
+            {
+                if (rbtNormal.IsChecked.Value)
+                {
+                    bmpImg = pokemonActual.Pokemon.ImgFrontal.ToBitmap();
+                    imgPokemonPokedex.SetImage(bmpImg);
+                    imgFrontal.SetImage(bmpImg);
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap());
+                }
+                else
+                {
+                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontalShiny.ToBitmap());
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTraseraShiny.ToBitmap());
+                }
+            }
+        }
 
+        private void plt_ColorChanged(object sender, Gabriel.Cat.Wpf.ColorChangedArgs e)
+        {
+            if(pltNormal==sender)
+            {
+                if (rbtNormal.IsChecked.Value)
+                {
+                    pokemonActual.imgPokemon.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltNormal.Colors));
+                    imgPokemonPokedex.Source = pokemonActual.imgPokemon.Source;
+                    imgFrontal.Source = pokemonActual.imgPokemon.Source;
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
+                }
+
+            }
+            else
+            {
+                if (!rbtNormal.IsChecked.Value)
+                {
+                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontalShiny.ToBitmap(pltShiny.Colors));
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTraseraShiny.ToBitmap(pltShiny.Colors));
+                }
+
+            }
+            hayCambios = true;
+
+        }
+
+        private void plt_ColorSelected(object sender, Gabriel.Cat.Wpf.ColorSelectedArgs e)
+        {
+            colorSelected = e.Color;
         }
     }
 }
