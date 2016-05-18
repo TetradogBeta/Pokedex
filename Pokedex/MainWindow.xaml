@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Pokedex"
         mc:Ignorable="d"
         Title="Pokedex" Height="350" Width="525">
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="163*"/>
             <ColumnDefinition Width="354*"/>
@@ -16,7 +16,7 @@
             <UniformGrid Grid.Column="0" x:Name="ugPokedex" Columns="3" />
         </ScrollViewer>
         <Grid Grid.Column="1">
-            <TabControl>
+            <TabControl Background="White">
                 <TabItem  Header="Pokedex">
                     <Grid>
                         <Grid.RowDefinitions>
