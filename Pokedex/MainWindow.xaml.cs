@@ -84,11 +84,12 @@ namespace Pokedex
             
             GuardaDatosPokemon();
             pokemonActual = sender as PokemonPokedex;
+             pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
+            pltShiny.Colors = pokemonActual.Pokemon.ImgFrontalShiny.Paleta;
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
             
             imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
-            pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
-            pltShiny.Colors = pokemonActual.Pokemon.ImgFrontalShiny.Paleta;
+           
             rbt_Checked();
         }
 
