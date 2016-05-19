@@ -38,12 +38,13 @@ namespace Pokedex
 
         private void GuardaRom(object sender, EventArgs e)
         {
-            if(hayCambios)
-            if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                GuardaDatosPokemon();
-                rom.Save();
-            }
+            if (hayCambios)
+                if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    GuardaDatosPokemon();
+                    rom.Save();
+                }
+                
         }
 
         private void PideRom()
@@ -61,7 +62,11 @@ namespace Pokedex
                     ugPokedex.Children.Clear();
                     try
                     {
-                        for (int i = 0, f = rom.Pokedex.Total; i < f; i++)
+                        pokemon = new PokemonPokedex(rom.Pokedex[0]);
+                        PonPokemon(pokemon);
+                        pokemon.Selected += PonPokemon;
+                        ugPokedex.Children.Add(pokemon);
+                        for (int i = 1, f = rom.Pokedex.Total; i < f; i++)
                         {
                             pokemon = new PokemonPokedex(rom.Pokedex[i]);
                             pokemon.Selected += PonPokemon;
@@ -70,19 +75,21 @@ namespace Pokedex
                     }
                     catch { }
                 }
-            } 
+            }
+            else this.Close();
         }
 
-        private void PonPokemon(object sender, EventArgs e)
+        private void PonPokemon(object sender, EventArgs e=null)
         {
             
             GuardaDatosPokemon();
             pokemonActual = sender as PokemonPokedex;
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
-            rbt_Checked(null, null);
+            
             imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
             pltShiny.Colors = pokemonActual.Pokemon.ImgFrontalShiny.Paleta;
+            rbt_Checked();
         }
 
         private void GuardaDatosPokemon()
@@ -112,22 +119,22 @@ namespace Pokedex
             }
         }
 
-        private void rbt_Checked(object sender, RoutedEventArgs e)
+        private void rbt_Checked(object sender=null, RoutedEventArgs e=null)
         {
             Bitmap bmpImg;
             if (pokemonActual != null)
             {
                 if (rbtNormal.IsChecked.Value)
                 {
-                    bmpImg = pokemonActual.Pokemon.ImgFrontal.ToBitmap();
+                    bmpImg = pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltNormal.Colors);
                     imgPokemonPokedex.SetImage(bmpImg);
                     imgFrontal.SetImage(bmpImg);
-                    imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap());
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
                 }
                 else
                 {
-                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontalShiny.ToBitmap());
-                    imgBack.SetImage(pokemonActual.Pokemon.ImgTraseraShiny.ToBitmap());
+                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontalShiny.ToBitmap(pltShiny.Colors));
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTraseraShiny.ToBitmap(pltShiny.Colors));
                 }
             }
         }
