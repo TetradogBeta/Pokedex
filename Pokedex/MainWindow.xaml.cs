@@ -30,6 +30,7 @@ namespace Pokedex
         bool hayCambios;
         public MainWindow()
         {
+         
             hayCambios = false;
             InitializeComponent();
             pltNormal.ColorPicker.IsAlfaEnabled = false;
