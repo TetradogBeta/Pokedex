@@ -30,23 +30,34 @@ namespace Pokedex
         bool hayCambios;
         public MainWindow()
         {
-         
+            ContextMenu menuContextual;
+            MenuItem opcionMenu;
             hayCambios = false;
             InitializeComponent();
             pltNormal.ColorPicker.IsAlfaEnabled = false;
             pltShiny.ColorPicker.IsAlfaEnabled = false;
+
+            menuContextual = new ContextMenu();
+            opcionMenu = new MenuItem();
+            opcionMenu.Header = "Cargar Rom";
+            opcionMenu.Click += (s, e) => PideRom();
+            menuContextual.Items.Add(opcionMenu);
+            opcionMenu = new MenuItem();
+            opcionMenu.Header = "Hacer BackUp";
+            opcionMenu.Click += (s, e) => rom.BackUp();
+            menuContextual.Items.Add(opcionMenu);
+            opcionMenu = new MenuItem();
+            opcionMenu.Header = "Guardar cambios";
+            opcionMenu.Click += (s, e) => { rom.Save();hayCambios = false; };
+            menuContextual.Items.Add(opcionMenu);
+            ContextMenu = menuContextual;
             PideRom();
             Closed += GuardaRom;
         }
 
         private void GuardaRom(object sender, EventArgs e)
         {
-            if (hayCambios)
-                if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    GuardaDatosPokemon();
-                    rom.Save();
-                }
+            GuardaSiHayCambios();
                 
         }
 
@@ -54,32 +65,56 @@ namespace Pokedex
         {
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
+            FrameWorkPokemonGBA.RomPokemon romCargada;
             opnRom.Filter = "gba|*.gba";
+            GuardaSiHayCambios();
             if(opnRom.ShowDialog().Value)
             {
-                rom = new FrameWorkPokemonGBA.RomPokemon(opnRom.FileName);
-                if (!rom.EsCompatiblePokedex)
+                romCargada= new FrameWorkPokemonGBA.RomPokemon(opnRom.FileName);
+                if (!romCargada.EsCompatiblePokedex)
                     MessageBox.Show("La rom no es compatible con el programa");
                 else
                 {
-                    ugPokedex.Children.Clear();
                     try
                     {
-                        pokemon = new PokemonPokedex(rom.Pokedex[0]);
-                        PonPokemon(pokemon);
-                        pokemon.Selected += PonPokemon;
-                        ugPokedex.Children.Add(pokemon);
-                        for (int i = 1, f = rom.Pokedex.Total; i < f; i++)
+                        pokemon = new PokemonPokedex(romCargada.Pokedex[0]);
+                        ugPokedex.Children.Clear();
+                        try
                         {
-                            pokemon = new PokemonPokedex(rom.Pokedex[i]);
+                            rom = romCargada;
+                            PonPokemon(pokemon);
                             pokemon.Selected += PonPokemon;
                             ugPokedex.Children.Add(pokemon);
+                            for (int i = 1, f = rom.Pokedex.Total; i < f; i++)
+                            {
+                                pokemon = new PokemonPokedex(rom.Pokedex[i]);
+                                pokemon.Selected += PonPokemon;
+                                ugPokedex.Children.Add(pokemon);
+                            }
                         }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debugger.Break();
+                        }
+                    }catch
+                    {
+                        MessageBox.Show("Problemas al cargar las imagenes!!");
+                        if (rom == null) this.Close();
+
                     }
-                    catch { }
                 }
             }
-            else this.Close();
+            else if(rom==null) this.Close();
+        }
+
+        public void GuardaSiHayCambios()
+        {
+            if (hayCambios)
+                if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    GuardaDatosPokemon();
+                    rom.Save();
+                }
         }
 
         private void PonPokemon(object sender, EventArgs e=null)
