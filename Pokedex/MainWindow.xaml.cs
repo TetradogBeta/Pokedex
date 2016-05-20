@@ -32,8 +32,8 @@ namespace Pokedex
         {
             hayCambios = false;
             InitializeComponent();
-            pltNormal.ColorDialog.ColorPicker.IsAlfaEnabled = false;
-            pltShiny.ColorDialog.ColorPicker.IsAlfaEnabled = false;
+            pltNormal.ColorPicker.IsAlfaEnabled = false;
+            pltShiny.ColorPicker.IsAlfaEnabled = false;
             PideRom();
             Closed += GuardaRom;
         }
