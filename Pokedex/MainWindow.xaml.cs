@@ -28,15 +28,18 @@ namespace Pokedex
         PokemonPokedex pokemonActual;
         System.Drawing.Color colorSelected;
         bool hayCambios;
+        private bool hayCambiosPokemonActual;
+
         public MainWindow()
         {
             ContextMenu menuContextual;
             MenuItem opcionMenu;
             hayCambios = false;
             InitializeComponent();
+            Closed += GuardaRom;
             pltNormal.ColorPicker.IsAlfaEnabled = false;
             pltShiny.ColorPicker.IsAlfaEnabled = false;
-
+            hayCambiosPokemonActual = false;
             menuContextual = new ContextMenu();
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Cargar Rom";
@@ -52,13 +55,14 @@ namespace Pokedex
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
-            Closed += GuardaRom;
+            
         }
 
         private void GuardaRom(object sender, EventArgs e)
         {
+           
             GuardaSiHayCambios();
-                
+            Application.Current.Shutdown();
         }
 
         private void PideRom()
@@ -109,12 +113,14 @@ namespace Pokedex
 
         public void GuardaSiHayCambios()
         {
-            if (hayCambios)
+            if (hayCambios&&rom!=null)
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     GuardaDatosPokemon();
                     rom.Save();
+
                 }
+            hayCambios = false;
         }
 
         private void PonPokemon(object sender, EventArgs e=null)
@@ -122,10 +128,11 @@ namespace Pokedex
             
             GuardaDatosPokemon();
             pokemonActual = sender as PokemonPokedex;
-             pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
+            pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
             pltShiny.Colors = pokemonActual.Pokemon.ImgFrontalShiny.Paleta;
+            txtNamePokemon.TextChanged -= txtNamePokemon_TextChanged;
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
-            
+            txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
             imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
            
             rbt_Checked();
@@ -133,12 +140,13 @@ namespace Pokedex
 
         private void GuardaDatosPokemon()
         {
-            if(pokemonActual!=null)
+            if(pokemonActual!=null&&hayCambiosPokemonActual)
             {
                 pokemonActual.Pokemon.Nombre = txtNamePokemon.Text;
                 //poner todos los datos!!
                 pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
                 pokemonActual.Pokemon.ImgFrontalShiny.Paleta = pltShiny.Colors;
+                hayCambiosPokemonActual = false;
             }
         }
 
@@ -154,7 +162,7 @@ namespace Pokedex
                 txtNamePokemon.Text = txtNamePokemon.Text.ToUpper();
                 txtNamePokemon.CaretIndex = txtNamePokemon.Text.Length;
                 hayCambios = true;//poner en todos los sitios ;)
-
+                hayCambiosPokemonActual = true;
             }
         }
 
@@ -201,7 +209,7 @@ namespace Pokedex
 
             }
             hayCambios = true;
-
+            hayCambiosPokemonActual = true;
         }
 
         private void plt_ColorSelected(object sender, Gabriel.Cat.Wpf.ColorSelectedArgs e)
