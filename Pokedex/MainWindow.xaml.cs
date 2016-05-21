@@ -86,6 +86,10 @@ namespace Pokedex
                         try
                         {
                             rom = romCargada;
+                            cmbObjeto2.ItemsSource = rom.Objetos.ToArray();
+                            cmbObjeto1.ItemsSource = rom.Objetos.ToArray();
+                            cmbTipo1.ItemsSource = rom.Tipos.ToArray();
+                            cmbTipo2.ItemsSource = rom.Tipos.ToArray();
                             PonPokemon(pokemon);
                             pokemon.Selected += PonPokemon;
                             ugPokedex.Children.Add(pokemon);
@@ -134,7 +138,14 @@ namespace Pokedex
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
             txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
             imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
-           
+            imgInfoBasicaPkm.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
+            //items
+            cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
+            cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
+            //tipos
+            cmbTipo1.SelectedItem = pokemonActual.Pokemon.Tipo1;
+            cmbTipo2.SelectedItem = pokemonActual.Pokemon.Tipo2;
+            //stats
             rbt_Checked();
         }
 
@@ -175,6 +186,7 @@ namespace Pokedex
                 {
                     bmpImg = pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltNormal.Colors);
                     imgPokemonPokedex.SetImage(bmpImg);
+                    imgInfoBasicaPkm.SetImage(bmpImg);
                     imgFrontal.SetImage(bmpImg);
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
                 }
@@ -215,6 +227,23 @@ namespace Pokedex
         private void plt_ColorSelected(object sender, Gabriel.Cat.Wpf.ColorSelectedArgs e)
         {
             colorSelected = e.Color;
+        }
+
+        private void txt_KeyDown(object sender, KeyEventArgs e)
+        {
+            int num;
+            hayCambios = true;
+            hayCambiosPokemonActual = true;
+            try
+            {
+                e.Handled = !(e.Key >= Key.D0 && e.Key <= Key.D9 || e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 || e.Key == Key.Decimal);
+                if (!e.Handled)
+                {
+                    num = int.Parse(((TextBox)sender).Text);
+                    e.Handled = num > byte.MaxValue || num < byte.MinValue;
+                }
+            }
+            catch { e.Handled = true; }
         }
     }
 }
