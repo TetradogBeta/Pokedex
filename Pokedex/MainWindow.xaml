@@ -38,7 +38,11 @@
                                     <TextBox x:Name="txtNamePokemon" TextChanged="txtNamePokemon_TextChanged" Width="200"/>
                                 </Viewbox>
                             </Grid>
+                           
                         </Grid>
+                        <TextBox Grid.Row="1" x:Name="txtDescripcion" TextChanged="txtDescripcion_TextChanged"/>
+
+
                     </Grid>
                 </TabItem>
                 <TabItem  Header="Información Básica" >

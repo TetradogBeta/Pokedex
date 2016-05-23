@@ -139,6 +139,8 @@ namespace Pokedex
             txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
             imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             imgInfoBasicaPkm.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
+            //descripcion
+            txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
             //items
             cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
             cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
@@ -244,6 +246,11 @@ namespace Pokedex
                 }
             }
             catch { e.Handled = true; }
+        }
+
+        private void txtDescripcion_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
