@@ -52,7 +52,7 @@
                             <ColumnDefinition Width="29*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Stats" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Estadistica de combate" HorizontalAlignment="Center"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="90"/>
@@ -116,13 +116,14 @@
                                 <TextBlock Text="Evs"/>
                                 <TextBox x:Name="txtEvs" Grid.Column="1" KeyDown="txt_KeyDown"/>
                             </Grid>
+                            <TextBlock Text="Otros datos" HorizontalAlignment="Center"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="90"/>
                                     <ColumnDefinition Width="125*"/>
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Exp"/>
+                                <TextBlock Text="Exp para nv 100"/>
                                 <TextBox x:Name="txtExp" Grid.Column="1" KeyDown="txt_KeyDown"/>
                             </Grid>
                             <Grid>

@@ -51,16 +51,16 @@ namespace Pokedex
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Guardar cambios";
-            opcionMenu.Click += (s, e) => { rom.Save();hayCambios = false; };
+            opcionMenu.Click += (s, e) => { rom.Save(); hayCambios = false; };
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
-            
+
         }
 
         private void GuardaRom(object sender, EventArgs e)
         {
-           
+
             GuardaSiHayCambios();
             Application.Current.Shutdown();
         }
@@ -72,9 +72,9 @@ namespace Pokedex
             FrameWorkPokemonGBA.RomPokemon romCargada;
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
-            if(opnRom.ShowDialog().Value)
+            if (opnRom.ShowDialog().Value)
             {
-                romCargada= new FrameWorkPokemonGBA.RomPokemon(opnRom.FileName);
+                romCargada = new FrameWorkPokemonGBA.RomPokemon(opnRom.FileName);
                 if (!romCargada.EsCompatiblePokedex)
                     MessageBox.Show("La rom no es compatible con el programa");
                 else
@@ -104,7 +104,8 @@ namespace Pokedex
                         {
                             System.Diagnostics.Debugger.Break();
                         }
-                    }catch
+                    }
+                    catch
                     {
                         MessageBox.Show("Problemas al cargar las imagenes!!");
                         if (rom == null) this.Close();
@@ -112,12 +113,12 @@ namespace Pokedex
                     }
                 }
             }
-            else if(rom==null) this.Close();
+            else if (rom == null) this.Close();
         }
 
         public void GuardaSiHayCambios()
         {
-            if (hayCambios&&rom!=null)
+            if (hayCambios && rom != null)
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     GuardaDatosPokemon();
@@ -127,9 +128,9 @@ namespace Pokedex
             hayCambios = false;
         }
 
-        private void PonPokemon(object sender, EventArgs e=null)
+        private void PonPokemon(object sender, EventArgs e = null)
         {
-            
+
             GuardaDatosPokemon();
             pokemonActual = sender as PokemonPokedex;
             pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
@@ -148,18 +149,47 @@ namespace Pokedex
             cmbTipo1.SelectedItem = pokemonActual.Pokemon.Tipo1;
             cmbTipo2.SelectedItem = pokemonActual.Pokemon.Tipo2;
             //stats
+            txtHp.Text = pokemonActual.Pokemon.Hp + "";
+            txtAtaque.Text = pokemonActual.Pokemon.Ataque + "";
+            txtDefensa.Text = pokemonActual.Pokemon.Defensa + "";
+            txtVelocidad.Text = pokemonActual.Pokemon.Velocidad + "";
+            txtAtaqueEspecial.Text = pokemonActual.Pokemon.AtaqueEspecial + "";
+            txtDefensaEspecial.Text = pokemonActual.Pokemon.DefensaEspecial + "";
+            txtExp.Text = pokemonActual.Pokemon.Exp100 + "";
+            txtGeneroRatio.Text = pokemonActual.Pokemon.Genero + "";
+            txtRatioCaptura.Text = pokemonActual.Pokemon.RatioCaptura + "";
+            txtEvs.Text = pokemonActual.Pokemon.Evs + "";
             rbt_Checked();
         }
 
         private void GuardaDatosPokemon()
         {
-            if(pokemonActual!=null&&hayCambiosPokemonActual)
+            if (pokemonActual != null && hayCambiosPokemonActual)
             {
                 pokemonActual.Pokemon.Nombre = txtNamePokemon.Text;
                 //poner todos los datos!!
                 pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
                 pokemonActual.Pokemon.ImgFrontalShiny.Paleta = pltShiny.Colors;
                 hayCambiosPokemonActual = false;
+                //descripcion
+                txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
+                //items
+                cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
+                cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
+                //tipos
+                cmbTipo1.SelectedItem = pokemonActual.Pokemon.Tipo1;
+                cmbTipo2.SelectedItem = pokemonActual.Pokemon.Tipo2;
+                //stats
+                pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
+                pokemonActual.Pokemon.Ataque = Convert.ToByte(txtAtaque.Text);
+                pokemonActual.Pokemon.Defensa = Convert.ToByte(txtDefensa.Text);
+                pokemonActual.Pokemon.Velocidad = Convert.ToByte(txtVelocidad.Text);
+                pokemonActual.Pokemon.AtaqueEspecial = Convert.ToByte(txtAtaqueEspecial.Text);
+                pokemonActual.Pokemon.DefensaEspecial = Convert.ToByte(txtDefensaEspecial.Text);
+                pokemonActual.Pokemon.Exp100 = Convert.ToByte(txtExp.Text);
+                pokemonActual.Pokemon.Genero = Convert.ToByte(txtGeneroRatio.Text);
+                pokemonActual.Pokemon.RatioCaptura = Convert.ToByte(txtRatioCaptura.Text);
+                pokemonActual.Pokemon.Evs = Convert.ToByte(txtEvs.Text);
             }
         }
 
@@ -179,7 +209,7 @@ namespace Pokedex
             }
         }
 
-        private void rbt_Checked(object sender=null, RoutedEventArgs e=null)
+        private void rbt_Checked(object sender = null, RoutedEventArgs e = null)
         {
             Bitmap bmpImg;
             if (pokemonActual != null)
@@ -202,7 +232,7 @@ namespace Pokedex
 
         private void plt_ColorChanged(object sender, Gabriel.Cat.Wpf.ColorChangedArgs e)
         {
-            if(pltNormal==sender)
+            if (pltNormal == sender)
             {
                 if (rbtNormal.IsChecked.Value)
                 {
@@ -250,7 +280,8 @@ namespace Pokedex
 
         private void txtDescripcion_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (txtDescripcion.Text.Length > FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX)
+                txtDescripcion.Text = txtDescripcion.Text.Substring(0, FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX);
         }
     }
 }
