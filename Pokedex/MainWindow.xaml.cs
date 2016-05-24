@@ -30,7 +30,7 @@ namespace Pokedex
         bool hayCambios;
         private bool hayCambiosPokemonActual;
         static readonly char[] caracteresNoNumericos=CaracteresNoNumericos();
-
+        
         public MainWindow()
         {
             ContextMenu menuContextual;
@@ -56,6 +56,7 @@ namespace Pokedex
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
+
 
         }
 
@@ -169,10 +170,11 @@ namespace Pokedex
             //img2
             if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
             {
-                imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2());
+              imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2());
             }else
             {
-                imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
+                //imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
+                imgFrontal2.SetImage(Utils.LZ77Handler.ConstructSprite(Resource1.huevo, pokemonActual.Pokemon.ImgFrontal.Paleta));
             }
         }
 
