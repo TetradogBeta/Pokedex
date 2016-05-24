@@ -82,7 +82,7 @@ namespace Pokedex
                 {
                     try
                     {
-                        pokemon = new PokemonPokedex(romCargada.Pokedex[1]);
+                        pokemon = new PokemonPokedex(romCargada.Pokedex[0]);
                         ugPokedex.Children.Clear();
                         try
                         {
@@ -137,7 +137,7 @@ namespace Pokedex
             GuardaDatosPokemon();
             pokemonActual = sender as PokemonPokedex;
             pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
-            pltShiny.Colors = pokemonActual.Pokemon.ImgFrontalShiny.Paleta;
+            pltShiny.Colors = pokemonActual.Pokemon.PaletaShiny;
             txtNamePokemon.TextChanged -= txtNamePokemon_TextChanged;
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
             txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
@@ -163,6 +163,17 @@ namespace Pokedex
             txtRatioCaptura.Text = pokemonActual.Pokemon.RatioCaptura + "";
             txtEvs.Text = pokemonActual.Pokemon.Evs + "";
             rbt_Checked();
+
+            //img2
+            if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+            {
+                imgBack2.SetImage(pokemonActual.Pokemon.ImgTrasera2.ToBitmap());
+                imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap());
+            }else
+            {
+                imgBack2.SetImage(Colors.White.ToBitmap(1, 1));
+                imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
+            }
         }
 
         private void GuardaDatosPokemon()
@@ -172,7 +183,7 @@ namespace Pokedex
                 pokemonActual.Pokemon.Nombre = txtNamePokemon.Text;
                 //poner todos los datos!!
                 pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
-                pokemonActual.Pokemon.ImgFrontalShiny.Paleta = pltShiny.Colors;
+                pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
                 hayCambiosPokemonActual = false;
                 //descripcion
                 pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
@@ -224,11 +235,21 @@ namespace Pokedex
                     imgInfoBasicaPkm.SetImage(bmpImg);
                     imgFrontal.SetImage(bmpImg);
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
+                    if(rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    {
+                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
+                    }
                 }
                 else
                 {
-                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontalShiny.ToBitmap(pltShiny.Colors));
-                    imgBack.SetImage(pokemonActual.Pokemon.ImgTraseraShiny.ToBitmap(pltShiny.Colors));
+                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltShiny.Colors));
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltShiny.Colors));
+                    if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    {
+                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
+                    }
                 }
             }
         }
@@ -243,6 +264,11 @@ namespace Pokedex
                     imgPokemonPokedex.Source = pokemonActual.imgPokemon.Source;
                     imgFrontal.Source = pokemonActual.imgPokemon.Source;
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
+                    if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    {
+                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
+                    }
                 }
 
             }
@@ -250,8 +276,13 @@ namespace Pokedex
             {
                 if (!rbtNormal.IsChecked.Value)
                 {
-                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontalShiny.ToBitmap(pltShiny.Colors));
-                    imgBack.SetImage(pokemonActual.Pokemon.ImgTraseraShiny.ToBitmap(pltShiny.Colors));
+                    imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltShiny.Colors));
+                    imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltShiny.Colors));
+                    if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    {
+                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
+                    }
                 }
 
             }
@@ -305,6 +336,12 @@ namespace Pokedex
                 if (!char.IsNumber(c))
                     caracteresNoNumericos[pos++] = c;
             return caracteresNoNumericos;
+        }
+
+        private void cmb_Selected(object sender, RoutedEventArgs e)
+        {
+            hayCambiosPokemonActual = true;
+            hayCambios = true;
         }
     }
 }
