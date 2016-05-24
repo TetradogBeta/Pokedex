@@ -29,6 +29,7 @@ namespace Pokedex
         System.Drawing.Color colorSelected;
         bool hayCambios;
         private bool hayCambiosPokemonActual;
+        static readonly char[] caracteresNoNumericos=CaracteresNoNumericos();
 
         public MainWindow()
         {
@@ -270,21 +271,40 @@ namespace Pokedex
             hayCambiosPokemonActual = true;
             try
             {
-                e.Handled = !(e.Key >= Key.D0 && e.Key <= Key.D9 || e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 || e.Key == Key.Decimal);
+                e.Handled = !(e.Key >= Key.D0 && e.Key <= Key.D9 || e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9 || e.Key == Key.Decimal||e.Key==Key.Subtract);
                 if (!e.Handled)
                 {
-                    num = int.Parse(((TextBox)sender).Text);
+                    num =int.Parse(((TextBox)sender).Text);
                     e.Handled = num > byte.MaxValue || num < byte.MinValue;
+                   if(e.Handled)
+                    {
+                        if (num < 0) num = 0;
+                        ((TextBox)sender).Text = Math.Min(byte.MaxValue, num)+"";
+                        e.Handled = false;
+                    }
                 }
             }
             catch { e.Handled = true; }
+            if (e.Handled)
+                ((TextBox)sender).Text = ((TextBox)sender).Text.Trim(caracteresNoNumericos);
         }
+
+
 
         private void txtDescripcion_TextChanged(object sender, TextChangedEventArgs e)
         {
             hayCambiosPokemonActual = true;
             if (txtDescripcion.Text.Length > FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX)
                 txtDescripcion.Text = txtDescripcion.Text.Substring(0, FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX);
+        }
+        private static char[] CaracteresNoNumericos()
+        {
+            char[] caracteresNoNumericos = new char[byte.MaxValue - 10];
+            int pos = 0;
+            for (char c = (char)byte.MinValue; c < byte.MaxValue; c++)
+                if (!char.IsNumber(c))
+                    caracteresNoNumericos[pos++] = c;
+            return caracteresNoNumericos;
         }
     }
 }

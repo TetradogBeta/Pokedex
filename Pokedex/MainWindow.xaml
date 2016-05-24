@@ -60,7 +60,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Hp"/>
-                                <TextBox x:Name="txtHp" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtHp" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -69,7 +69,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Ataque"/>
-                                <TextBox x:Name="txtAtaque" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtAtaque" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -78,7 +78,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Defensa"/>
-                                <TextBox x:Name="txtDefensa" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtDefensa" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -87,7 +87,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Velocidad"/>
-                                <TextBox x:Name="txtVelocidad" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtVelocidad" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -96,7 +96,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="AtaqueEspecial"/>
-                                <TextBox x:Name="txtAtaqueEspecial" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtAtaqueEspecial" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -105,7 +105,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="DefensaEspecial"/>
-                                <TextBox x:Name="txtDefensaEspecial" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtDefensaEspecial" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -114,7 +114,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Evs"/>
-                                <TextBox x:Name="txtEvs" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtEvs" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <TextBlock Text="Otros datos" HorizontalAlignment="Center"/>
                             <Grid>
@@ -124,7 +124,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Exp para nv 100"/>
-                                <TextBox x:Name="txtExp" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtExp" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -133,7 +133,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Ratio Catura"/>
-                                <TextBox x:Name="txtRatioCaptura" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtRatioCaptura" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -142,7 +142,7 @@
                                     <ColumnDefinition Width="13*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Genero Ratio"/>
-                                <TextBox x:Name="txtGeneroRatio" Grid.Column="1" KeyDown="txt_KeyDown"/>
+                                <TextBox x:Name="txtGeneroRatio" Grid.Column="1" KeyUp="txt_KeyDown"/>
                             </Grid>
                         </StackPanel>
                         <StackPanel Grid.Column="1">
@@ -186,8 +186,8 @@
                                 <wpf:ColorTable x:Name="pltShiny" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected"/>
                                 <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
                             </Grid>
-                            <Image Grid.Column="3" x:Name="imgFrontal"/>
-                            <Image Grid.Column="4" x:Name="imgBack"/>
+                            <Image Grid.Column="3" x:Name="imgBack"/>
+                            <Image Grid.Column="4" x:Name="imgFrontal"/>
                         </Grid>
                     </Grid>
                 </TabItem>

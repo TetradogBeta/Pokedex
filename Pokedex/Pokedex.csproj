@@ -38,6 +38,10 @@
     <ApplicationIcon>Pokedex_Hoen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gabriel.Cat.Utilitats, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\pc\Desktop\Programas\FrameWorkPokemonGBA\bin\Release\Gabriel.Cat.Utilitats.dll</HintPath>
+    </Reference>
     <Reference Include="Gabriel.Cat.Wpf, Version=1.0.5984.3417, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\pc\Desktop\Programas\Gabriel.Cat.Wpf\Gabriel.Cat.Wpf\bin\Release\Gabriel.Cat.Wpf.dll</HintPath>
