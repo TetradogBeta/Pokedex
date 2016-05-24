@@ -30,11 +30,13 @@ namespace Pokedex
         bool hayCambios;
         private bool hayCambiosPokemonActual;
         static readonly char[] caracteresNoNumericos=CaracteresNoNumericos();
-        
+        bool huevoActivado;
+        bool shinyActivado;
         public MainWindow()
         {
             ContextMenu menuContextual;
             MenuItem opcionMenu;
+            huevoActivado = false;
             hayCambios = false;
             InitializeComponent();
             Closed += GuardaRom;
@@ -56,8 +58,48 @@ namespace Pokedex
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
+            KeyUp += (s, e) =>
+            {
+                
+                if (e.Key == Key.H)
+                {
+                    huevoActivado = !huevoActivado;
+                    PonImagenesMinis();
+                }else if(e.Key==Key.S)
+                {
+                    shinyActivado = !shinyActivado;
+                    PonImagenesMinis();
+                }
+            };
 
 
+        }
+
+        private void PonImagenesMinis()
+        {
+            PokemonPokedex[] pokedex;
+            pokedex = ugPokedex.Children.OfType<PokemonPokedex>().ToArray();
+           
+            if (huevoActivado)
+            {
+                for (int i = 0; i < pokedex.Length; i++)
+                {
+                    if (!shinyActivado)
+                        pokedex[i].imgPokemon.SetImage(Utils.LZ77Handler.ConstructSprite(Resource1.huevo, pokedex[i].Pokemon.ImgFrontal.Paleta));
+                    else
+                        pokedex[i].imgPokemon.SetImage(Utils.LZ77Handler.ConstructSprite(Resource1.huevo, pokedex[i].Pokemon.PaletaShiny));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pokedex.Length; i++)
+                {
+                    if (!shinyActivado)
+                        pokedex[i].imgPokemon.SetImage(pokedex[i].Pokemon.ImgFrontal.ToBitmap());
+                    else
+                        pokedex[i].imgPokemon.SetImage(pokedex[i].Pokemon.ImgFrontal.ToBitmap(pokedex[i].Pokemon.PaletaShiny));
+                }
+            }
         }
 
         private void GuardaRom(object sender, EventArgs e)
@@ -173,8 +215,7 @@ namespace Pokedex
               imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2());
             }else
             {
-                //imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
-                imgFrontal2.SetImage(Utils.LZ77Handler.ConstructSprite(Resource1.huevo, pokemonActual.Pokemon.ImgFrontal.Paleta));
+                imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
             }
         }
 
