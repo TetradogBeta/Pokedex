@@ -81,7 +81,7 @@ namespace Pokedex
                 {
                     try
                     {
-                        pokemon = new PokemonPokedex(romCargada.Pokedex[0]);
+                        pokemon = new PokemonPokedex(romCargada.Pokedex[1]);
                         ugPokedex.Children.Clear();
                         try
                         {
@@ -95,9 +95,11 @@ namespace Pokedex
                             ugPokedex.Children.Add(pokemon);
                             for (int i = 1, f = rom.Pokedex.Total; i < f; i++)
                             {
-                                pokemon = new PokemonPokedex(rom.Pokedex[i]);
-                                pokemon.Selected += PonPokemon;
-                                ugPokedex.Children.Add(pokemon);
+
+                                    pokemon = new PokemonPokedex(rom.Pokedex[i]);
+                                    pokemon.Selected += PonPokemon;
+                                    ugPokedex.Children.Add(pokemon);
+
                             }
                         }
                         catch (Exception ex)
@@ -155,7 +157,7 @@ namespace Pokedex
             txtVelocidad.Text = pokemonActual.Pokemon.Velocidad + "";
             txtAtaqueEspecial.Text = pokemonActual.Pokemon.AtaqueEspecial + "";
             txtDefensaEspecial.Text = pokemonActual.Pokemon.DefensaEspecial + "";
-            txtExp.Text = pokemonActual.Pokemon.Exp100 + "";
+            txtExp.Text = pokemonActual.Pokemon.Exp + "";
             txtGeneroRatio.Text = pokemonActual.Pokemon.Genero + "";
             txtRatioCaptura.Text = pokemonActual.Pokemon.RatioCaptura + "";
             txtEvs.Text = pokemonActual.Pokemon.Evs + "";
@@ -172,13 +174,13 @@ namespace Pokedex
                 pokemonActual.Pokemon.ImgFrontalShiny.Paleta = pltShiny.Colors;
                 hayCambiosPokemonActual = false;
                 //descripcion
-                txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
+                pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
                 //items
-                cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
-                cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
+                pokemonActual.Pokemon.Objeto1= cmbObjeto1.SelectedItem as FrameWorkPokemonGBA.Objeto;
+                pokemonActual.Pokemon.Objeto2 = cmbObjeto2.SelectedItem as FrameWorkPokemonGBA.Objeto;
                 //tipos
-                cmbTipo1.SelectedItem = pokemonActual.Pokemon.Tipo1;
-                cmbTipo2.SelectedItem = pokemonActual.Pokemon.Tipo2;
+                pokemonActual.Pokemon.Tipo1= cmbTipo1.SelectedItem.ToString();//da problemas de momento...
+                pokemonActual.Pokemon.Tipo2= cmbTipo2.SelectedItem.ToString();
                 //stats
                 pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
                 pokemonActual.Pokemon.Ataque = Convert.ToByte(txtAtaque.Text);
@@ -186,7 +188,7 @@ namespace Pokedex
                 pokemonActual.Pokemon.Velocidad = Convert.ToByte(txtVelocidad.Text);
                 pokemonActual.Pokemon.AtaqueEspecial = Convert.ToByte(txtAtaqueEspecial.Text);
                 pokemonActual.Pokemon.DefensaEspecial = Convert.ToByte(txtDefensaEspecial.Text);
-                pokemonActual.Pokemon.Exp100 = Convert.ToByte(txtExp.Text);
+                pokemonActual.Pokemon.Exp = Convert.ToByte(txtExp.Text);
                 pokemonActual.Pokemon.Genero = Convert.ToByte(txtGeneroRatio.Text);
                 pokemonActual.Pokemon.RatioCaptura = Convert.ToByte(txtRatioCaptura.Text);
                 pokemonActual.Pokemon.Evs = Convert.ToByte(txtEvs.Text);
@@ -280,6 +282,7 @@ namespace Pokedex
 
         private void txtDescripcion_TextChanged(object sender, TextChangedEventArgs e)
         {
+            hayCambiosPokemonActual = true;
             if (txtDescripcion.Text.Length > FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX)
                 txtDescripcion.Text = txtDescripcion.Text.Substring(0, FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX);
         }
