@@ -184,7 +184,6 @@
                                     <ColumnDefinition Width="126*"/>
                                     <ColumnDefinition Width="126*"/>
                                     <ColumnDefinition Width="126*"/>
-                                    <ColumnDefinition Width="126*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
@@ -203,9 +202,9 @@
                                     <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
                                 </Grid>
                                 <Image Grid.Column="3" x:Name="imgBack"/>
-                                <Image Grid.Column="4" x:Name="imgBack2"/>
-                                <Image Grid.Column="5" x:Name="imgFrontal"/>
-                                <Image Grid.Column="6" x:Name="imgFrontal2"/>
+
+                                <Image Grid.Column="4" x:Name="imgFrontal"/>
+                                <Image Grid.Column="5" x:Name="imgFrontal2"/>
                             </Grid>
                         </Grid>
                     </Viewbox>

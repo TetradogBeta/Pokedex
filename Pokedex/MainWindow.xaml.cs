@@ -84,6 +84,7 @@ namespace Pokedex
                     {
                         pokemon = new PokemonPokedex(romCargada.Pokedex[0]);
                         ugPokedex.Children.Clear();
+                        pokemonActual = null;
                         try
                         {
                             rom = romCargada;
@@ -129,6 +130,7 @@ namespace Pokedex
 
                 }
             hayCambios = false;
+            
         }
 
         private void PonPokemon(object sender, EventArgs e = null)
@@ -167,11 +169,9 @@ namespace Pokedex
             //img2
             if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
             {
-                imgBack2.SetImage(pokemonActual.Pokemon.ImgTrasera2.ToBitmap());
-                imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap());
+                imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2());
             }else
             {
-                imgBack2.SetImage(Colors.White.ToBitmap(1, 1));
                 imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
             }
         }
@@ -184,7 +184,7 @@ namespace Pokedex
                 //poner todos los datos!!
                 pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
                 pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
-                hayCambiosPokemonActual = false;
+                
                 //descripcion
                 pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
                 //items
@@ -204,6 +204,8 @@ namespace Pokedex
                 pokemonActual.Pokemon.Genero = Convert.ToByte(txtGeneroRatio.Text);
                 pokemonActual.Pokemon.RatioCaptura = Convert.ToByte(txtRatioCaptura.Text);
                 pokemonActual.Pokemon.Evs = Convert.ToByte(txtEvs.Text);
+
+                hayCambiosPokemonActual = false;
             }
         }
 
@@ -237,8 +239,7 @@ namespace Pokedex
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
                     if(rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
                     {
-                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
-                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltNormal.Colors));
                     }
                 }
                 else
@@ -247,8 +248,7 @@ namespace Pokedex
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltShiny.Colors));
                     if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
                     {
-                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
-                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltShiny.Colors));
                     }
                 }
             }
@@ -266,8 +266,7 @@ namespace Pokedex
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
                     if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
                     {
-                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
-                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltNormal.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltNormal.Colors));
                     }
                 }
 
@@ -280,8 +279,7 @@ namespace Pokedex
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltShiny.Colors));
                     if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
                     {
-                        imgBack2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
-                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal2.ToBitmap(pltShiny.Colors));
+                        imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltShiny.Colors));
                     }
                 }
 
