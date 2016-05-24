@@ -38,9 +38,8 @@
     <ApplicationIcon>Pokedex_Hoen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gabriel.Cat.Utilitats, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\pc\Desktop\Programas\FrameWorkPokemonGBA\bin\Release\Gabriel.Cat.Utilitats.dll</HintPath>
+    <Reference Include="Gabriel.Cat.Utilitats">
+      <HintPath>C:\Users\pc\Desktop\Programas\Gabriel.Cat.Utilitats\Gabriel.Cat.Utilitats\bin\Release\Gabriel.Cat.Utilitats.dll</HintPath>
     </Reference>
     <Reference Include="Gabriel.Cat.Wpf, Version=1.0.5984.3417, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -128,16 +127,16 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\pc\Desktop\Programas\FrameWorkPokemonGBA\FrameWorkPokemonGBA.csproj">
-      <Project>{398759e4-4411-4c40-9241-da3962f0c74b}</Project>
-      <Name>FrameWorkPokemonGBA</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Pokedex_Hoen.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\pc\Desktop\Programas\FrameWorkPokemonGBA\FrameWorkPokemonGBA.csproj">
+      <Project>{398759e4-4411-4c40-9241-da3962f0c74b}</Project>
+      <Name>FrameWorkPokemonGBA</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

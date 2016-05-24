@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Gabriel.Cat;
 using Microsoft.Win32;
 using Gabriel.Cat.Extension;
 using System.ComponentModel;
@@ -125,7 +126,7 @@ namespace Pokedex
                 {
                     try
                     {
-                        pokemon = new PokemonPokedex(romCargada.Pokedex[0]);
+
                         ugPokedex.Children.Clear();
                         pokemonActual = null;
                         try
@@ -135,10 +136,9 @@ namespace Pokedex
                             cmbObjeto1.ItemsSource = rom.Objetos.ToArray();
                             cmbTipo1.ItemsSource = rom.Tipos.ToArray();
                             cmbTipo2.ItemsSource = rom.Tipos.ToArray();
-                            PonPokemon(pokemon);
-                            pokemon.Selected += PonPokemon;
-                            ugPokedex.Children.Add(pokemon);
-                            for (int i = 1, f = rom.Pokedex.Total; i < f; i++)
+                            
+
+                            for (int i = 0, f = rom.Pokedex.Total; i < f; i++)
                             {
 
                                     pokemon = new PokemonPokedex(rom.Pokedex[i]);
@@ -146,6 +146,7 @@ namespace Pokedex
                                     ugPokedex.Children.Add(pokemon);
 
                             }
+                            PonPokemon(ugPokedex.Children[0] as PokemonPokedex);
                         }
                         catch (Exception ex)
                         {
@@ -179,14 +180,31 @@ namespace Pokedex
         private void PonPokemon(object sender, EventArgs e = null)
         {
 
+        	Action act;
+        	BitmapAnimated bmpAnimated=imgPokemonPokedex.Tag as BitmapAnimated; 
             GuardaDatosPokemon();
+            if(bmpAnimated!=null)bmpAnimated.Finsh();
             pokemonActual = sender as PokemonPokedex;
             pltNormal.Colors = pokemonActual.Pokemon.ImgFrontal.Paleta;
             pltShiny.Colors = pokemonActual.Pokemon.PaletaShiny;
             txtNamePokemon.TextChanged -= txtNamePokemon_TextChanged;
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
             txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
-            imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
+           
+            if(rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda){
+            	bmpAnimated=pokemonActual.Pokemon.ImgFrontal.ToAnimatedBitmap();
+            	bmpAnimated.FrameChanged+=(s,frameActual)=>{
+            	act=()=>{           
+            		imgPokemonPokedex.SetImage(frameActual);};
+            		Dispatcher.BeginInvoke(act);
+            	};
+            	
+            	bmpAnimated.Start();
+            	imgPokemonPokedex.Tag=bmpAnimated;
+            
+            }
+            else
+                imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             imgInfoBasicaPkm.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             //descripcion
             txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
@@ -276,13 +294,17 @@ namespace Pokedex
                 if (rbtNormal.IsChecked.Value)
                 {
                     bmpImg = pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltNormal.Colors);
-                    imgPokemonPokedex.SetImage(bmpImg);
+                    
                     imgInfoBasicaPkm.SetImage(bmpImg);
                     imgFrontal.SetImage(bmpImg);
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
                     if(rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
                     {
                         imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltNormal.Colors));
+                    }
+                    else
+                    {
+                        imgPokemonPokedex.SetImage(bmpImg);
                     }
                 }
                 else
