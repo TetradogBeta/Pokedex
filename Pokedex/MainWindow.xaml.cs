@@ -225,8 +225,8 @@ namespace Pokedex
             {
                 pokemonActual.Pokemon.Nombre = txtNamePokemon.Text;
                 //poner todos los datos!!
-                pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
-                pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
+              //  pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
+                //pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
                 
                 //descripcion
                 pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
