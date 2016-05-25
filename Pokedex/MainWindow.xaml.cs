@@ -62,15 +62,19 @@ namespace Pokedex
             PideRom();
             KeyUp += (s, e) =>
             {
-                
-                if (e.Key == Key.H)
+
+                if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    huevoActivado = !huevoActivado;
-                    PonImagenesMinis();
-                }else if(e.Key==Key.S)
-                {
-                    shinyActivado = !shinyActivado;
-                    PonImagenesMinis();
+                    if (e.Key == Key.H)
+                    {
+                        huevoActivado = !huevoActivado;
+                        PonImagenesMinis();
+                    }
+                    else if (e.Key == Key.S)
+                    {
+                        shinyActivado = !shinyActivado;
+                        PonImagenesMinis();
+                    }
                 }
             };
 
