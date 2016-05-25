@@ -146,7 +146,7 @@ namespace Pokedex
                                     ugPokedex.Children.Add(pokemon);
 
                             }
-                            PonPokemon(ugPokedex.Children[0] as PokemonPokedex);
+                            PonPokemon(ugPokedex.Children[1] as PokemonPokedex);
                         }
                         catch (Exception ex)
                         {
@@ -221,7 +221,7 @@ namespace Pokedex
             txtVelocidad.Text = pokemonActual.Pokemon.Velocidad + "";
             txtAtaqueEspecial.Text = pokemonActual.Pokemon.AtaqueEspecial + "";
             txtDefensaEspecial.Text = pokemonActual.Pokemon.DefensaEspecial + "";
-            txtExp.Text = pokemonActual.Pokemon.Exp + "";
+            txtExp.Text = pokemonActual.Pokemon.ExpBase + "";
             txtGeneroRatio.Text = pokemonActual.Pokemon.Genero + "";
             txtRatioCaptura.Text = pokemonActual.Pokemon.RatioCaptura + "";
             txtEvs.Text = pokemonActual.Pokemon.Evs + "";
@@ -230,7 +230,7 @@ namespace Pokedex
             //img2
             if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
             {
-              imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2());
+                rbt_Checked();
             }else
             {
                 imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
@@ -247,7 +247,8 @@ namespace Pokedex
                 //pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
                 
                 //descripcion
-                pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
+                if(pokemonActual.Pokemon.PokedexData.Descripcion != txtDescripcion.Text)
+                     pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
                 //items
                 pokemonActual.Pokemon.Objeto1= cmbObjeto1.SelectedItem as FrameWorkPokemonGBA.Objeto;
                 pokemonActual.Pokemon.Objeto2 = cmbObjeto2.SelectedItem as FrameWorkPokemonGBA.Objeto;
@@ -261,7 +262,7 @@ namespace Pokedex
                 pokemonActual.Pokemon.Velocidad = Convert.ToByte(txtVelocidad.Text);
                 pokemonActual.Pokemon.AtaqueEspecial = Convert.ToByte(txtAtaqueEspecial.Text);
                 pokemonActual.Pokemon.DefensaEspecial = Convert.ToByte(txtDefensaEspecial.Text);
-                pokemonActual.Pokemon.Exp = Convert.ToByte(txtExp.Text);
+                pokemonActual.Pokemon.ExpBase = Convert.ToByte(txtExp.Text);
                 pokemonActual.Pokemon.Genero = Convert.ToByte(txtGeneroRatio.Text);
                 pokemonActual.Pokemon.RatioCaptura = Convert.ToByte(txtRatioCaptura.Text);
                 pokemonActual.Pokemon.Evs = Convert.ToByte(txtEvs.Text);
@@ -385,12 +386,7 @@ namespace Pokedex
 
 
 
-        private void txtDescripcion_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            hayCambiosPokemonActual = true;
-            if (txtDescripcion.Text.Length > FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX)
-                txtDescripcion.Text = txtDescripcion.Text.Substring(0, FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDDESCRIPCIONPOKEDEX);
-        }
+
         private static char[] CaracteresNoNumericos()
         {
             char[] caracteresNoNumericos = new char[byte.MaxValue - 10];
@@ -405,6 +401,12 @@ namespace Pokedex
         {
             hayCambiosPokemonActual = true;
             hayCambios = true;
+        }
+
+        private void txtDescripcion_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            hayCambios = true;
+            hayCambiosPokemonActual = true;
         }
     }
 }
