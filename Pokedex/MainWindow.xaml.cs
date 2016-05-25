@@ -214,8 +214,8 @@ namespace Pokedex
             {
                 txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
                 txtDescripcion.IsReadOnly = false;
-            }
-            catch { txtDescripcion.Text = "NO SE PUEDE LEER!";txtDescripcion.IsReadOnly = true; }//hasta arreglar el problema con las descripciones se queda este apaño
+            }//lo pongo por si hay problemas al leer la descripción al menos se puede ver :)
+            catch { txtDescripcion.Text = "NO SE PUEDE LEER!";txtDescripcion.IsReadOnly = true; }
             //items
             cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
             cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
