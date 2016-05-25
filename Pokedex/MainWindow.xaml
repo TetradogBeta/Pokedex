@@ -41,7 +41,7 @@
                                 </Grid>
 
                             </Grid>
-                            <TextBox Grid.Row="1" x:Name="txtDescripcion" TextWrapping="Wrap" TextChanged="txtDescripcion_TextChanged" AcceptsReturn="True"/>
+                            <TextBox Grid.Row="1" x:Name="txtDescripcion" TextWrapping="Wrap" TextChanged="txtDescripcion_TextChanged" AcceptsReturn="True" MaxWidth="300"/>
 
 
                         </Grid>
