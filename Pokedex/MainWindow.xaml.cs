@@ -33,6 +33,7 @@ namespace Pokedex
         static readonly char[] caracteresNoNumericos=CaracteresNoNumericos();
         bool huevoActivado;
         bool shinyActivado;
+        PokemonPokedex[] pokedexCargada;
         public MainWindow()
         {
             ContextMenu menuContextual;
@@ -146,7 +147,9 @@ namespace Pokedex
                                     ugPokedex.Children.Add(pokemon);
 
                             }
+                            pokedexCargada = ugPokedex.Children.OfType<PokemonPokedex>().ToArray();
                             PonPokemon(ugPokedex.Children[1] as PokemonPokedex);
+
                         }
                         catch (Exception ex)
                         {
@@ -207,7 +210,12 @@ namespace Pokedex
                 imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             imgInfoBasicaPkm.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             //descripcion
-            txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
+            try
+            {
+                txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
+                txtDescripcion.IsReadOnly = false;
+            }
+            catch { txtDescripcion.Text = "NO SE PUEDE LEER!";txtDescripcion.IsReadOnly = true; }//hasta arreglar el problema con las descripciones se queda este apaño
             //items
             cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
             cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
@@ -235,6 +243,7 @@ namespace Pokedex
             {
                 imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
             }
+            hayCambiosPokemonActual = false;
         }
 
         private void GuardaDatosPokemon()
@@ -407,6 +416,28 @@ namespace Pokedex
         {
             hayCambios = true;
             hayCambiosPokemonActual = true;
+        }
+
+        private void txtFiltroNombre_TextChanged(object sender, KeyEventArgs e)
+        {
+            List<UIElement> pokedexFiltrada = new List<UIElement>();
+            string texto;
+            if (!String.IsNullOrEmpty(txtFiltroNombre.Text))
+            {
+                texto = txtFiltroNombre.Text.ToUpper();
+                for (int i = 0; i < pokedexCargada.Length; i++)
+                {
+                    if (pokedexCargada[i].ToString().ToUpper().Contains(texto))
+                        pokedexFiltrada.Add(pokedexCargada[i]);
+                }
+                ugPokedex.Children.Clear();
+                ugPokedex.Children.AddRange(pokedexFiltrada);
+            }
+            else
+            {
+                ugPokedex.Children.Clear();
+                ugPokedex.Children.AddRange(pokedexCargada);
+            }
         }
     }
 }

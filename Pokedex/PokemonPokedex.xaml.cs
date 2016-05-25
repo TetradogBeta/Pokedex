@@ -51,5 +51,9 @@ namespace Pokedex
                 imgPokemon.SetImage(pokemon.ImgFrontal.ToBitmap());
             }
         }
+        public override string ToString()
+        {
+            return pokemon.Nombre;
+        }
     }
 }
