@@ -237,12 +237,14 @@ namespace Pokedex
                 imgPokemonPokedex.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             imgInfoBasicaPkm.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap());
             //descripcion
+            txtDescripcion.TextChanged -= txtDescripcion_TextChanged;
             try
             {
                 txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
                 txtDescripcion.IsReadOnly = false;
             }//lo pongo por si hay problemas al leer la descripción al menos se puede ver :)
             catch { txtDescripcion.Text = "NO SE PUEDE LEER!";txtDescripcion.IsReadOnly = true; }
+            txtDescripcion.TextChanged += txtDescripcion_TextChanged;
             //items
             try { 
             cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
@@ -302,7 +304,7 @@ namespace Pokedex
             }
                 catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
                          //stats
-            pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
+                pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
                 pokemonActual.Pokemon.Ataque = Convert.ToByte(txtAtaque.Text);
                 pokemonActual.Pokemon.Defensa = Convert.ToByte(txtDefensa.Text);
                 pokemonActual.Pokemon.Velocidad = Convert.ToByte(txtVelocidad.Text);
