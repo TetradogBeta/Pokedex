@@ -78,7 +78,30 @@ namespace Pokedex
                 }
             };
 
+            KeyDown += ControlTeclasDown;
 
+        }
+
+        private void ControlTeclasDown(object sender, KeyEventArgs e)
+        {
+           
+                int indexPokemonHaCargar = -1;
+                //para pasar los pokemons :D
+                //no funciona en todos los casos...
+                if (e.Key == Key.Down)
+                {
+                    indexPokemonHaCargar = ugPokedex.Children.IndexOf(pokemonActual) + 1;
+
+                }
+                else if (e.Key == Key.Up)
+                {
+                    indexPokemonHaCargar = ugPokedex.Children.IndexOf(pokemonActual) - 1;
+                if (indexPokemonHaCargar < 0) indexPokemonHaCargar = 0;
+                }
+                if (indexPokemonHaCargar >= 0 && indexPokemonHaCargar < ugPokedex.Children.Count)
+                    PonPokemon(ugPokedex.Children[indexPokemonHaCargar]);
+
+           
         }
 
         private void PonImagenesMinis()
@@ -221,8 +244,11 @@ namespace Pokedex
             }//lo pongo por si hay problemas al leer la descripción al menos se puede ver :)
             catch { txtDescripcion.Text = "NO SE PUEDE LEER!";txtDescripcion.IsReadOnly = true; }
             //items
+            try { 
             cmbObjeto1.SelectedItem = pokemonActual.Pokemon.Objeto1;
             cmbObjeto2.SelectedItem = pokemonActual.Pokemon.Objeto2;
+             }
+                catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
             //tipos
             cmbTipo1.SelectedItem = pokemonActual.Pokemon.Tipo1;
             cmbTipo2.SelectedItem = pokemonActual.Pokemon.Tipo2;
@@ -263,13 +289,20 @@ namespace Pokedex
                 if(pokemonActual.Pokemon.PokedexData.Descripcion != txtDescripcion.Text)
                      pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
                 //items
-                pokemonActual.Pokemon.Objeto1= cmbObjeto1.SelectedItem as FrameWorkPokemonGBA.Objeto;
-                pokemonActual.Pokemon.Objeto2 = cmbObjeto2.SelectedItem as FrameWorkPokemonGBA.Objeto;
-                //tipos
+                try
+                {
+                    pokemonActual.Pokemon.Objeto1 = cmbObjeto1.SelectedItem as FrameWorkPokemonGBA.Objeto;
+                    pokemonActual.Pokemon.Objeto2 = cmbObjeto2.SelectedItem as FrameWorkPokemonGBA.Objeto;
+                }
+                catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
+                         //tipos
+                try { 
                 pokemonActual.Pokemon.Tipo1= cmbTipo1.SelectedItem.ToString();//da problemas de momento...
                 pokemonActual.Pokemon.Tipo2= cmbTipo2.SelectedItem.ToString();
-                //stats
-                pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
+            }
+                catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
+                         //stats
+            pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
                 pokemonActual.Pokemon.Ataque = Convert.ToByte(txtAtaque.Text);
                 pokemonActual.Pokemon.Defensa = Convert.ToByte(txtDefensa.Text);
                 pokemonActual.Pokemon.Velocidad = Convert.ToByte(txtVelocidad.Text);

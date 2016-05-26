@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Pokedex"
         mc:Ignorable="d"
         Title="Pokedex" Height="318" Width="525">
-    <Grid Background="White">
+    <Grid Background="White"  >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="163*"/>
             <ColumnDefinition Width="354*"/>
@@ -15,13 +15,13 @@
         
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="250"/>
-                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="250*"/>
+                    <RowDefinition Height="35*"/>
                 </Grid.RowDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" >
-                <UniformGrid  x:Name="ugPokedex" Columns="3" />
+            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
+                <UniformGrid  x:Name="ugPokedex" Columns="3"  />
             </ScrollViewer>
-            <TextBox x:Name="txtFiltroNombre" Grid.Row="1" KeyUp="txtFiltroNombre_TextChanged"/>
+            <TextBox x:Name="txtFiltroNombre" Grid.Row="1" KeyUp="txtFiltroNombre_TextChanged" />
             </Grid>
 
        
