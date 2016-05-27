@@ -286,7 +286,6 @@ namespace Pokedex
             if (pokemonActual != null && hayCambiosPokemonActual)
             {
                 pokemonActual.Pokemon.Nombre = txtNamePokemon.Text; 
-
                 //poner todos los datos!!
               //  pokemonActual.Pokemon.ImgFrontal.Paleta = pltNormal.Colors;
                 //pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
