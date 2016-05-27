@@ -25,6 +25,7 @@ namespace Pokedex
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         FrameWorkPokemonGBA.RomPokemon rom;
         PokemonPokedex pokemonActual;
         System.Drawing.Color colorSelected;
