@@ -12,19 +12,19 @@
             <ColumnDefinition Width="163*"/>
             <ColumnDefinition Width="354*"/>
         </Grid.ColumnDefinitions>
-        
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="250*"/>
-                    <RowDefinition Height="35*"/>
-                </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                 <UniformGrid  x:Name="ugPokedex" Columns="3"  />
             </ScrollViewer>
             <TextBox x:Name="txtFiltroNombre" Grid.Row="1" KeyUp="txtFiltroNombre_TextChanged" />
-            </Grid>
+        </Grid>
 
-       
+
         <Grid Grid.Column="1">
             <TabControl Background="White">
                 <TabItem  Header="Pokedex">
@@ -42,12 +42,20 @@
                                 <Image Grid.Column="1" x:Name="imgPokemonPokedex"/>
                                 <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="31"/>
-                                        <RowDefinition Height="78"/>
+                                        <RowDefinition Height="31*"/>
+                                        <RowDefinition Height="78*"/>
                                     </Grid.RowDefinitions>
-                                    <Viewbox Grid.Column="0">
-                                        <TextBox x:Name="txtNamePokemon" TextChanged="txtNamePokemon_TextChanged" Width="200"/>
-                                    </Viewbox>
+
+
+                                    <TextBox x:Name="txtNamePokemon" TextChanged="txtNamePokemon_TextChanged" Width="200"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25*"/>
+                                            <RowDefinition Height="53*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBox  x:Name="txtNombreEspecie" TextChanged="txtNombreEspecie_TextChanged" Margin="8,0,9,0"/>
+                                    </Grid>
+
                                 </Grid>
 
                             </Grid>

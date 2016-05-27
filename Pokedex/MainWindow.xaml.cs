@@ -221,8 +221,10 @@ namespace Pokedex
             txtNamePokemon.TextChanged -= txtNamePokemon_TextChanged;
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
             txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
-           
-            if(rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda){
+            txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
+            txtNombreEspecie.Text = pokemonActual.Pokemon.PokedexData.Especie;
+            txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
+            if (rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda){
             	bmpAnimated=pokemonActual.Pokemon.ImgFrontal.ToAnimatedBitmap();
             	bmpAnimated.FrameChanged+=(s,frameActual)=>{
             	act=()=>{           
@@ -291,6 +293,8 @@ namespace Pokedex
                 //descripcion
                 if(pokemonActual.Pokemon.PokedexData.Descripcion != txtDescripcion.Text)
                      pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
+                if (pokemonActual.Pokemon.PokedexData.Especie != txtNombreEspecie.Text)
+                    pokemonActual.Pokemon.PokedexData.Especie = txtNombreEspecie.Text;
                 //items
                 try
                 {
@@ -329,7 +333,7 @@ namespace Pokedex
             }
             else
             {
-                txtNamePokemon.Text = txtNamePokemon.Text.ToUpper();
+                txtNamePokemon.Text = txtNamePokemon.Text;
                 txtNamePokemon.CaretIndex = txtNamePokemon.Text.Length;
                 hayCambios = true;//poner en todos los sitios ;)
                 hayCambiosPokemonActual = true;
@@ -478,6 +482,14 @@ namespace Pokedex
                 ugPokedex.Children.Clear();
                 ugPokedex.Children.AddRange(pokedexCargada);
             }
+        }
+
+        private void txtNombreEspecie_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            hayCambios = true;
+            hayCambiosPokemonActual = true;
+            if (txtNombreEspecie.Text.Length > FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDESPECIE)
+                txtNombreEspecie.Text = txtNombreEspecie.Text.Substring(0, FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDESPECIE);
         }
     }
 }
