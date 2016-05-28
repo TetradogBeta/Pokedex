@@ -19,7 +19,7 @@ namespace Pokedex
     /// <summary>
     /// Interaction logic for PokemonPokedex.xaml
     /// </summary>
-    public partial class PokemonPokedex : UserControl
+    public partial class PokemonPokedex : UserControl,IComparable,IComparable<PokemonPokedex>
     {
         FrameWorkPokemonGBA.Pokemon pokemon;
         public event EventHandler Selected;
@@ -54,6 +54,20 @@ namespace Pokedex
         public override string ToString()
         {
             return pokemon.Nombre;
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as PokemonPokedex);
+        }
+
+        public int CompareTo(PokemonPokedex other)
+        {
+            int compareTo;
+            if (other != null)
+                compareTo = Pokemon.CompareTo(other.Pokemon);
+            else compareTo = -1;
+            return compareTo;
         }
     }
 }

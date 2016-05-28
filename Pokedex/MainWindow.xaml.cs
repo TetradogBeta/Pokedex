@@ -75,6 +75,10 @@ namespace Pokedex
                     {
                         shinyActivado = !shinyActivado;
                         PonImagenesMinis();
+                    }else if(e.Key==Key.O)
+                    {
+                        FrameWorkPokemonGBA.Pokemon.OrdenNacional = !FrameWorkPokemonGBA.Pokemon.OrdenNacional;
+                        ugPokedex.Children.Sort();
                     }
                 }
             };
@@ -167,7 +171,7 @@ namespace Pokedex
                             cmbTipo2.ItemsSource = rom.Tipos.ToArray();
                             
 
-                            for (int i = 0, f = rom.Pokedex.Total; i < f; i++)
+                            for (short i = 0, f =Convert.ToInt16(rom.Pokedex.Total); i < f; i++)
                             {
 
                                     pokemon = new PokemonPokedex(rom.Pokedex[i]);
@@ -222,7 +226,15 @@ namespace Pokedex
             txtNamePokemon.Text = pokemonActual.Pokemon.Nombre;
             txtNamePokemon.TextChanged += txtNamePokemon_TextChanged;
             txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
-            txtNombreEspecie.Text = pokemonActual.Pokemon.PokedexData.Especie;
+            try
+            {
+                txtNombreEspecie.Text = pokemonActual.Pokemon.PokedexData.Especie;
+                txtNombreEspecie.IsReadOnly = false;
+            }catch
+            {
+                txtNombreEspecie.Text = "ERROR al LEER";
+                txtNombreEspecie.IsReadOnly = true;
+            }
             txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
             if (rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda){
             	bmpAnimated=pokemonActual.Pokemon.ImgFrontal.ToAnimatedBitmap();
