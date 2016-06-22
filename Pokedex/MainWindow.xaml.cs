@@ -26,7 +26,7 @@ namespace Pokedex
     public partial class MainWindow : Window
     {
         
-        FrameWorkPokemonGBA.RomPokemon rom;
+        FrameWorkPokemonGBA.Rom rom;
         PokemonPokedex pokemonActual;
         System.Drawing.Color colorSelected;
         bool hayCambios;
@@ -53,11 +53,11 @@ namespace Pokedex
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Hacer BackUp";
-            opcionMenu.Click += (s, e) => rom.BackUp();
+            opcionMenu.Click += (s, e) => rom.CopiaDeSeguridadOriginal();
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Guardar cambios";
-            opcionMenu.Click += (s, e) => { rom.Save(); hayCambios = false; };
+            opcionMenu.Click += (s, e) => { rom.Guardar(); hayCambios = false; };
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
@@ -147,16 +147,13 @@ namespace Pokedex
         {
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
-            FrameWorkPokemonGBA.RomPokemon romCargada;
+            FrameWorkPokemonGBA.Rom romCargada;
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
             if (opnRom.ShowDialog().Value)
             {
-                romCargada = new FrameWorkPokemonGBA.RomPokemon(opnRom.FileName);
-                if (!romCargada.EsCompatiblePokedex)
-                    MessageBox.Show("La rom no es compatible con el programa");
-                else
-                {
+                romCargada = new FrameWorkPokemonGBA.Rom(opnRom.FileName);
+
                     try
                     {
 
@@ -165,8 +162,8 @@ namespace Pokedex
                         try
                         {
                             rom = romCargada;
-                            cmbObjeto2.ItemsSource = rom.Objetos.ToArray();
-                            cmbObjeto1.ItemsSource = rom.Objetos.ToArray();
+                            cmbObjeto2.ItemsSource = rom.Objetos.Todos;
+                            cmbObjeto1.ItemsSource = rom.Objetos.Todos;
                             cmbTipo1.ItemsSource = rom.Tipos.ToArray();
                             cmbTipo2.ItemsSource = rom.Tipos.ToArray();
                             
@@ -194,7 +191,7 @@ namespace Pokedex
                         if (rom == null) this.Close();
 
                     }
-                }
+                
             }
             else if (rom == null) this.Close();
         }
@@ -205,7 +202,7 @@ namespace Pokedex
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     GuardaDatosPokemon();
-                    rom.Save();
+                    rom.Guardar();
 
                 }
             hayCambios = false;
@@ -228,7 +225,7 @@ namespace Pokedex
             txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
             try
             {
-                txtNombreEspecie.Text = pokemonActual.Pokemon.PokedexData.Especie;
+            //    txtNombreEspecie.Text = pokemonActual.Pokemon.PokedexData.Especie;
                 txtNombreEspecie.IsReadOnly = false;
             }catch
             {
@@ -236,8 +233,8 @@ namespace Pokedex
                 txtNombreEspecie.IsReadOnly = true;
             }
             txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
-            if (rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda){
-            	bmpAnimated=pokemonActual.Pokemon.ImgFrontal.ToAnimatedBitmap();
+            if (rom.Edicion==FrameWorkPokemonGBA.Edicion.Esmeralda){
+            	bmpAnimated=pokemonActual.Pokemon.ImgFrontal.AnimacionEsmeralda();
             	bmpAnimated.FrameChanged+=(s,frameActual)=>{
             	act=()=>{           
             		imgPokemonPokedex.SetImage(frameActual);};
@@ -255,7 +252,7 @@ namespace Pokedex
             txtDescripcion.TextChanged -= txtDescripcion_TextChanged;
             try
             {
-                txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.Descripcion;
+              //  txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.;
                 txtDescripcion.IsReadOnly = false;
             }//lo pongo por si hay problemas al leer la descripción al menos se puede ver :)
             catch { txtDescripcion.Text = "NO SE PUEDE LEER!";txtDescripcion.IsReadOnly = true; }
@@ -283,7 +280,7 @@ namespace Pokedex
             rbt_Checked();
 
             //img2
-            if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+            if (rom.Edicion == FrameWorkPokemonGBA.Edicion.Esmeralda)
             {
                 rbt_Checked();
             }else
@@ -303,10 +300,10 @@ namespace Pokedex
                 //pokemonActual.Pokemon.PaletaShiny = pltShiny.Colors;
                 
                 //descripcion
-                if(pokemonActual.Pokemon.PokedexData.Descripcion != txtDescripcion.Text)
+           /*     if(pokemonActual.Pokemon.PokedexData.Descripcion != txtDescripcion.Text)
                      pokemonActual.Pokemon.PokedexData.Descripcion= txtDescripcion.Text;
                 if (pokemonActual.Pokemon.PokedexData.Especie != txtNombreEspecie.Text)
-                    pokemonActual.Pokemon.PokedexData.Especie = txtNombreEspecie.Text;
+                    pokemonActual.Pokemon.PokedexData.Especie = txtNombreEspecie.Text;*/
                 //items
                 try
                 {
@@ -364,7 +361,7 @@ namespace Pokedex
                     imgInfoBasicaPkm.SetImage(bmpImg);
                     imgFrontal.SetImage(bmpImg);
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
-                    if(rom.Version==FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    if(rom.Edicion==FrameWorkPokemonGBA.Edicion.Esmeralda)
                     {
                         imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltNormal.Colors));
                     }
@@ -377,7 +374,7 @@ namespace Pokedex
                 {
                     imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltShiny.Colors));
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltShiny.Colors));
-                    if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    if (rom.Edicion == FrameWorkPokemonGBA.Edicion.Esmeralda)
                     {
                         imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltShiny.Colors));
                     }
@@ -395,7 +392,7 @@ namespace Pokedex
                     imgPokemonPokedex.Source = pokemonActual.imgPokemon.Source;
                     imgFrontal.Source = pokemonActual.imgPokemon.Source;
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltNormal.Colors));
-                    if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    if (rom.Edicion == FrameWorkPokemonGBA.Edicion.Esmeralda)
                     {
                         imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltNormal.Colors));
                     }
@@ -408,7 +405,7 @@ namespace Pokedex
                 {
                     imgFrontal.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap(pltShiny.Colors));
                     imgBack.SetImage(pokemonActual.Pokemon.ImgTrasera.ToBitmap(pltShiny.Colors));
-                    if (rom.Version == FrameWorkPokemonGBA.RomPokemon.VersionRom.Esmeralda)
+                    if (rom.Edicion == FrameWorkPokemonGBA.Edicion.Esmeralda)
                     {
                         imgFrontal2.SetImage(pokemonActual.Pokemon.ImgFrontal.ToBitmap2(pltShiny.Colors));
                     }
@@ -500,8 +497,8 @@ namespace Pokedex
         {
             hayCambios = true;
             hayCambiosPokemonActual = true;
-            if (txtNombreEspecie.Text.Length > FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDESPECIE)
-                txtNombreEspecie.Text = txtNombreEspecie.Text.Substring(0, FrameWorkPokemonGBA.DescripcionPokedex.LONGITUDESPECIE);
+            if (txtNombreEspecie.Text.Length > FrameWorkPokemonGBA.PokedexData.LongitudEspecie)
+                txtNombreEspecie.Text = txtNombreEspecie.Text.Substring(0, FrameWorkPokemonGBA.PokedexData.LongitudEspecie);
         }
     }
 }
