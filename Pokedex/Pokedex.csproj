@@ -133,9 +133,9 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\pc\Desktop\Programas\FrameWorkPokemonGBA\FrameWorkPokemonGBA.csproj">
-      <Project>{398759e4-4411-4c40-9241-da3962f0c74b}</Project>
-      <Name>FrameWorkPokemonGBA</Name>
+    <ProjectReference Include="..\..\..\..\SharpDevelop Projects\PokemonGBAFrameWork\PokemonGBAFrameWork\PokemonGBAFrameWork.csproj">
+      <Project>{42256c23-1e9b-41e5-a5da-d3c6af6b824d}</Project>
+      <Name>PokemonGBAFrameWork</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

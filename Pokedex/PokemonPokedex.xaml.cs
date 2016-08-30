@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FrameWorkPokemonGBA;
+using PokemonGBAFrameWork;
 using Gabriel.Cat.Extension;
 namespace Pokedex
 {
@@ -21,9 +21,9 @@ namespace Pokedex
     /// </summary>
     public partial class PokemonPokedex : UserControl,IComparable,IComparable<PokemonPokedex>
     {
-        FrameWorkPokemonGBA.Pokemon pokemon;
+        Pokemon pokemon;
         public event EventHandler Selected;
-        public PokemonPokedex(FrameWorkPokemonGBA.Pokemon pokemon)
+        public PokemonPokedex(Pokemon pokemon)
         {
            
             
@@ -48,7 +48,7 @@ namespace Pokedex
                 if (value == null)
                     throw new NullReferenceException();
                 pokemon = value;
-                imgPokemon.SetImage(pokemon.ImgFrontal.ToBitmap());
+                imgPokemon.SetImage(pokemon.Sprites.ImagenFrontalNormal);
             }
         }
         public override string ToString()
