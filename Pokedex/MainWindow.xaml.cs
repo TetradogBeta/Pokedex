@@ -27,13 +27,13 @@ namespace Pokedex
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        //problema para detectar 
         RomPokemon rom;
         Edicion edicion;
         CompilacionRom.Compilacion compilacion;
         PokemonPokedex pokemonActual;
         Objeto[] objetos;
-
+        BloqueImagen hueboSprite;
 
         System.Drawing.Color colorSelected;
         bool hayCambios;
@@ -49,6 +49,7 @@ namespace Pokedex
             MenuItem opcionMenu;
             huevoActivado = false;
             hayCambios = false;
+            hueboSprite = new BloqueImagen(0, Resource1.huevo, new BloqueImagen.Paleta(new System.Drawing.Color[BloqueImagen.Paleta.TAMAÑOPALETA]));
             InitializeComponent();
             evSelectorAtaque.Items.AddRange(nivelEvs);
             evSelectorAtaqueEspecial.Items.AddRange(nivelEvs);
@@ -95,7 +96,7 @@ namespace Pokedex
                     }
                     else if (e.Key == Key.O)
                     {
-                        Pokemon.Orden = (Pokemon.OrdenPokemon)(((int)Pokemon.Orden + 1) % (int)Pokemon.OrdenPokemon.Nacional);
+                        Pokemon.Orden = (Pokemon.OrdenPokemon)(((int)Pokemon.Orden + 1) % ((int)Pokemon.OrdenPokemon.Nacional+1));
                         ugPokedex.Children.Sort();
                     }
                 }
@@ -137,9 +138,9 @@ namespace Pokedex
                 for (int i = 0; i < pokedex.Length; i++)
                 {
                     if (!shinyActivado)
-                        pokedex[i].imgPokemon.SetImage(BloqueImagen.GetBloqueImagen(Resource1.huevo, pokedex[i].Pokemon.Sprites.PaletaNormal)[0]);
+                        pokedex[i].imgPokemon.SetImage(hueboSprite.GetBitmap(pokedex[i].Pokemon.Sprites.PaletaNormal));
                     else
-                        pokedex[i].imgPokemon.SetImage(BloqueImagen.GetBloqueImagen(Resource1.huevo, pokedex[i].Pokemon.Sprites.PaletaShiny)[0]);
+                        pokedex[i].imgPokemon.SetImage(hueboSprite.GetBitmap(pokedex[i].Pokemon.Sprites.PaletaShiny));
                 }
             }
             else
@@ -156,7 +157,7 @@ namespace Pokedex
 
         private void GuardaRom(object sender, EventArgs e)
         {
-
+          if(!System.Diagnostics.Debugger.IsAttached)
             GuardaSiHayCambios();
             Application.Current.Shutdown();
         }
@@ -189,17 +190,20 @@ namespace Pokedex
                         //cmbTipo2.ItemsSource = rom.Tipos.ToArray();
 
 
-                        for (int i = 0, f = Pokemon.TotalPokemon(rom) * 3 / 4; i < f; i++)
+                        for (int i = 0, f = Pokemon.TotalPokemon(rom)+25; i < f; i++)
                         {
-
-                            pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i));
-                            pokemon.Selected += PonPokemon;
-                            ugPokedex.Children.Add(pokemon);
-
+                            try
+                            {
+                               // if(f!=387) System.Diagnostics.Debugger.Break();
+                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i));
+                                pokemon.Selected += PonPokemon;
+                                ugPokedex.Children.Add(pokemon);
+                            }
+                            catch { System.Diagnostics.Debugger.Break(); }
                         }
                         pokedexCargada = ugPokedex.Children.OfType<PokemonPokedex>().ToArray();
                         PonPokemon(ugPokedex.Children[1] as PokemonPokedex);
-
+                        Title = "Pokedex -" + rom.NombreRom;
                     }
                     catch (Exception ex)
                     {
@@ -219,6 +223,7 @@ namespace Pokedex
 
         public void GuardaSiHayCambios()
         {
+
             if (hayCambios && rom != null)
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {

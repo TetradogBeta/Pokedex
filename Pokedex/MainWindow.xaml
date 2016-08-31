@@ -46,25 +46,25 @@
                                     <RowDefinition Height="78*"/>
                                 </Grid.RowDefinitions>
 
-                                <Viewbox>
-                                    <TextBox x:Name="txtNamePokemon" TextChanged="txtNamePokemon_TextChanged" />
-                                </Viewbox>
+
+                                <TextBox x:Name="txtNamePokemon" TextChanged="txtNamePokemon_TextChanged" />
+
                                 <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="25*"/>
                                         <RowDefinition Height="53*"/>
                                     </Grid.RowDefinitions>
-                                    <Viewbox>
-                                        <TextBox  x:Name="txtNombreEspecie" TextChanged="txtNombreEspecie_TextChanged"/>
-                                    </Viewbox>
+
+                                    <TextBox  x:Name="txtNombreEspecie" TextChanged="txtNombreEspecie_TextChanged"/>
+
                                 </Grid>
 
                             </Grid>
 
                         </Grid>
-                        <Viewbox Grid.Row="1">
-                            <TextBox  x:Name="txtDescripcion" TextWrapping="Wrap" TextChanged="txtDescripcion_TextChanged" AcceptsReturn="True"/>
-                        </Viewbox>
+
+                        <TextBox  x:Name="txtDescripcion" TextWrapping="Wrap" TextChanged="txtDescripcion_TextChanged" AcceptsReturn="True" Grid.Row="1"/>
+
 
                     </Grid>
 
