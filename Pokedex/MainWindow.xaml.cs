@@ -167,6 +167,7 @@ namespace Pokedex
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
             RomPokemon romCargada;
+            int totalEntradas;
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
             if (opnRom.ShowDialog().Value)
@@ -189,13 +190,18 @@ namespace Pokedex
                         //  cmbTipo1.ItemsSource = rom.Tipos.ToArray();
                         //cmbTipo2.ItemsSource = rom.Tipos.ToArray();
 
-
-                        for (int i = 0, f = Pokemon.TotalPokemon(rom)+25; i < f; i++)
+                        totalEntradas = DescripcionPokedex.TotalEntradas(rom, edicion, compilacion);
+                        //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
+                        pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, 0, totalEntradas));//para coger la pokedex se usa el orden nacional no el de la gameFreak
+                        pokemon.Selected += PonPokemon;
+                        pokemon.Pokemon.Descripcion = DescripcionPokedex.GetDescripcionPokedex(rom, 0);
+                        pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
+                        ugPokedex.Children.Add(pokemon);
+                        for (int i = 1, f = Pokemon.TotalPokemon(rom); i < f; i++)
                         {
                             try
                             {
-                               // if(f!=387) System.Diagnostics.Debugger.Break();
-                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i));
+                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i,totalEntradas));
                                 pokemon.Selected += PonPokemon;
                                 ugPokedex.Children.Add(pokemon);
                             }
@@ -227,7 +233,7 @@ namespace Pokedex
             if (hayCambios && rom != null)
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    GuardaDatosPokemon();
+                    ActualizoDatosPokemon();
                     rom.Guardar();
 
                 }
@@ -240,7 +246,7 @@ namespace Pokedex
 
             Action act;
             BitmapAnimated bmpAnimated = imgPokemonPokedex.Tag as BitmapAnimated;
-            GuardaDatosPokemon();
+            ActualizoDatosPokemon();
             if (bmpAnimated != null) bmpAnimated.Finsh();
             pokemonActual = sender as PokemonPokedex;
             pltNormal.Colors = pokemonActual.Pokemon.Sprites.PaletaNormal;
@@ -254,18 +260,15 @@ namespace Pokedex
             evSelectorDefensa.SelectedIndex = (int)pokemonActual.Pokemon.DefensaEvs;
             evSelectorAtaqueEspecial.SelectedIndex = (int)pokemonActual.Pokemon.AtaqueEspecialEvs;
             evSelectorDefensaEspecial.SelectedIndex = (int)pokemonActual.Pokemon.DefensaEspecialEvs;
-            //  txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
-            try
-            {
-                //      txtNombreEspecie.Text = pokemonActual.Pokemon.Descripcion.NombreEspecie;
-                //    txtNombreEspecie.IsReadOnly = false;
-            }
-            catch
-            {
-                //     txtNombreEspecie.Text = "ERROR al LEER";
-                //   txtNombreEspecie.IsReadOnly = true;
-            }
-            //  txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
+            txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
+
+                if(pokemonActual.Pokemon.Descripcion!=null)
+                      txtNombreEspecie.Text = pokemonActual.Pokemon.Descripcion.NombreEspecie;
+                else
+                    txtNombreEspecie.Text = "No tiene...";
+                txtNombreEspecie.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
+
+              txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
 
             bmpAnimated = pokemonActual.Pokemon.Sprites.GetAnimacionImagenFrontal();
             bmpAnimated.FrameChanged += (s, frameActual) =>
@@ -283,17 +286,22 @@ namespace Pokedex
 
             imgInfoBasicaPkm.SetImage(pokemonActual.Pokemon.Sprites.ImagenFrontalNormal);
             //descripcion
-            //txtDescripcion.TextChanged -= txtDescripcion_TextChanged;
-            try
+            txtDescripcion2.Text = "";
+            txtDescripcion.TextChanged -= txtDescripcion_TextChanged;
+            txtDescripcion2.TextChanged -= txtDescripcion_TextChanged;
+            if (pokemonActual.Pokemon.Descripcion != null)
             {
-                //  txtDescripcion.Text = pokemonActual.Pokemon.PokedexData.;
-                //     txtDescripcion.IsReadOnly = false;
-            }//lo pongo por si hay problemas al leer la descripción al menos se puede ver :)
-            catch
-            {
-                //txtDescripcion.Text = "NO SE PUEDE LEER!"; txtDescripcion.IsReadOnly = true;
+                txtDescripcion.Text = pokemonActual.Pokemon.Descripcion.Descripcion.Texto;
+                if (pokemonActual.Pokemon.Descripcion is DescripcionPokedexRubiZafiro)
+                    txtDescripcion2.Text = ((DescripcionPokedexRubiZafiro)pokemonActual.Pokemon.Descripcion).Descripcion2.Texto;
             }
-            //  txtDescripcion.TextChanged += txtDescripcion_TextChanged;
+            else
+                txtDescripcion.Text = "No tiene descripcion en la pokedex...";
+
+            txtDescripcion.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
+            txtDescripcion2.IsReadOnly = !(pokemonActual.Pokemon.Descripcion is DescripcionPokedexRubiZafiro);
+            txtDescripcion.TextChanged += txtDescripcion_TextChanged;
+            txtDescripcion2.TextChanged += txtDescripcion_TextChanged;
             //items
             try
             {
@@ -328,7 +336,7 @@ namespace Pokedex
             hayCambiosPokemonActual = false;
         }
 
-        private void GuardaDatosPokemon()
+        private void ActualizoDatosPokemon()
         {
             if (pokemonActual != null && hayCambiosPokemonActual)
             {
@@ -348,10 +356,10 @@ namespace Pokedex
                 pokemonActual.Pokemon.AtaqueEspecialEvs = (Pokemon.NivelEvs)evSelectorAtaqueEspecial.SelectedIndex;
                 pokemonActual.Pokemon.DefensaEspecialEvs = (Pokemon.NivelEvs)evSelectorDefensaEspecial.SelectedIndex;
                 //descripcion
-                //   if (pokemonActual.Pokemon.Descripcion.Descripcion != txtDescripcion.Text)
-                //     pokemonActual.Pokemon.Descripcion.Descripcion.Texto = txtDescripcion.Text;
-                //if (pokemonActual.Pokemon.Descripcion.NombreEspecie != txtNombreEspecie.Text)
-                //  pokemonActual.Pokemon.Descripcion.NombreEspecie.Texto = txtNombreEspecie.Text;
+                   if (pokemonActual.Pokemon.Descripcion.Descripcion != txtDescripcion.Text)
+                     pokemonActual.Pokemon.Descripcion.Descripcion.Texto = txtDescripcion.Text;
+                if (pokemonActual.Pokemon.Descripcion.NombreEspecie != txtNombreEspecie.Text)
+                  pokemonActual.Pokemon.Descripcion.NombreEspecie.Texto = txtNombreEspecie.Text;
                 //items
                 try
                 {
@@ -442,6 +450,7 @@ namespace Pokedex
                     imgPokemonPokedex.Source = pokemonActual.imgPokemon.Source;
                     imgFrontal.Source = pokemonActual.imgPokemon.Source;
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltNormal.Colors));
+                    imgInfoBasicaPkm.Source = imgFrontal.Source;
                     if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     {
                         imgFrontal2.SetImage(((SpriteEsmeralda)pokemonActual.Pokemon.Sprites).GetCustomImagenFrontal2(pltNormal.Colors));
