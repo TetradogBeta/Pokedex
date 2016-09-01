@@ -197,13 +197,23 @@
                     </Viewbox>
                 </TabItem>
                 <TabItem Header="Más información">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <ComboBox x:Name="cmbHabiliad1"/>
+                            <TextBlock Text="Habilidades"/>
+                            <ComboBox x:Name="cmbHabiliad1"/>
                         <ComboBox x:Name="cmbHabiliad2"/>
-
-                        <ComboBox x:Name="cmbGrupoHuevo1"/>
+                            <TextBlock Text="Grupo huevo"/>
+                            <ComboBox x:Name="cmbGrupoHuevo1"/>
                         <ComboBox x:Name="cmbGrupoHuevo2"/>
                     </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Image x:Name="imgPokemonMasInfo"/>
+                        </StackPanel>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="Imágenes">
                     <Viewbox>

@@ -336,11 +336,7 @@ namespace Pokedex
             rbt_Checked();
 
             //img2
-            if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
-            {
-                rbt_Checked();
-            }
-            else
+            if (edicion.Abreviacion != Edicion.ABREVIACIONESMERALDA)
             {
                 imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
             }
@@ -424,9 +420,10 @@ namespace Pokedex
                 if (rbtNormal.IsChecked.Value)
                 {
                     bmpImg = pokemonActual.Pokemon.Sprites.GetCustomImagenFrontal(pltNormal.Colors);
-
-                    imgInfoBasicaPkm.SetImage(bmpImg);
                     imgFrontal.SetImage(bmpImg);
+                    imgInfoBasicaPkm.Source=imgFrontal.Source;
+                    imgPokemonMasInfo.Source = imgFrontal.Source;
+
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltNormal.Colors));
                     if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     {
@@ -458,7 +455,9 @@ namespace Pokedex
                 {
                     pokemonActual.imgPokemon.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenFrontal(pltNormal.Colors));
                     imgPokemonPokedex.Source = pokemonActual.imgPokemon.Source;
-                    imgFrontal.Source = pokemonActual.imgPokemon.Source;
+                    imgPokemonMasInfo.Source = pokemonActual.imgPokemon.Source;
+                    imgInfoBasicaPkm.Source = pokemonActual.imgPokemon.Source;
+                    imgFrontal.Source=pokemonActual.imgPokemon.Source;
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltNormal.Colors));
                     imgInfoBasicaPkm.Source = imgFrontal.Source;
                     if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
