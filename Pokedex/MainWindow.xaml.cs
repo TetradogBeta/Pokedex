@@ -34,7 +34,8 @@ namespace Pokedex
         PokemonPokedex pokemonActual;
         Objeto[] objetos;
         BloqueImagen hueboSprite;
-
+        Tipo[] tipos;
+        Habilidad[] habilidades;
         System.Drawing.Color colorSelected;
         bool hayCambios;
         private bool hayCambiosPokemonActual;
@@ -44,7 +45,7 @@ namespace Pokedex
         PokemonPokedex[] pokedexCargada;
         public MainWindow()
         {
-            int[] nivelEvs = new int[] {0,1,2,3 };
+            int[] nivelEvs = new int[] { 0, 1, 2, 3 };
             ContextMenu menuContextual;
             MenuItem opcionMenu;
             huevoActivado = false;
@@ -57,7 +58,8 @@ namespace Pokedex
             evSelectorDefensaEspecial.Items.AddRange(nivelEvs);
             evSelectorHp.Items.AddRange(nivelEvs);
             evSelectorVelocidad.Items.AddRange(nivelEvs);
-
+            cmbGrupoHuevo1.ItemsSource = Enum.GetValues(typeof(Pokemon.GrupoHuevo));
+            cmbGrupoHuevo2.ItemsSource = Enum.GetValues(typeof(Pokemon.GrupoHuevo));
             cmbCrecimiento.Items.AddRange(Enum.GetValues(typeof(Pokemon.RatioCrecimiento)));
             cmbGenero.Items.AddRange(Enum.GetValues(typeof(Pokemon.RatioGenero)));
             Closed += GuardaRom;
@@ -96,7 +98,7 @@ namespace Pokedex
                     }
                     else if (e.Key == Key.O)
                     {
-                        Pokemon.Orden = (Pokemon.OrdenPokemon)(((int)Pokemon.Orden + 1) % ((int)Pokemon.OrdenPokemon.Nacional+1));
+                        Pokemon.Orden = (Pokemon.OrdenPokemon)(((int)Pokemon.Orden + 1) % ((int)Pokemon.OrdenPokemon.Nacional + 1));
                         ugPokedex.Children.Sort();
                     }
                 }
@@ -157,8 +159,8 @@ namespace Pokedex
 
         private void GuardaRom(object sender, EventArgs e)
         {
-          if(!System.Diagnostics.Debugger.IsAttached)
-            GuardaSiHayCambios();
+            if (!System.Diagnostics.Debugger.IsAttached)
+                GuardaSiHayCambios();
             Application.Current.Shutdown();
         }
 
@@ -167,6 +169,7 @@ namespace Pokedex
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
             RomPokemon romCargada;
+
             int totalEntradas;
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
@@ -185,10 +188,14 @@ namespace Pokedex
                         edicion = Edicion.GetEdicion(rom);
                         compilacion = CompilacionRom.GetCompilacion(rom, edicion);
                         objetos = Objeto.GetObjetos(rom, edicion, compilacion);
+                        tipos = Tipo.GetTipos(rom, edicion, compilacion);
+                        habilidades = Habilidad.GetHabilidades(rom, edicion, compilacion);
+                        cmbHabiliad1.ItemsSource = habilidades;
+                        cmbHabiliad2.ItemsSource = habilidades;
                         cmbObjeto2.ItemsSource = objetos;
                         cmbObjeto1.ItemsSource = objetos;
-                        //  cmbTipo1.ItemsSource = rom.Tipos.ToArray();
-                        //cmbTipo2.ItemsSource = rom.Tipos.ToArray();
+                        cmbTipo1.ItemsSource = tipos;
+                        cmbTipo2.ItemsSource = tipos;
 
                         totalEntradas = DescripcionPokedex.TotalEntradas(rom, edicion, compilacion);
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
@@ -201,15 +208,17 @@ namespace Pokedex
                         {
                             try
                             {
-                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i,totalEntradas));
+                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i, totalEntradas));
                                 pokemon.Selected += PonPokemon;
                                 ugPokedex.Children.Add(pokemon);
                             }
                             catch { System.Diagnostics.Debugger.Break(); }
                         }
+
                         pokedexCargada = ugPokedex.Children.OfType<PokemonPokedex>().ToArray();
+                        ugPokedex.Children.Sort();
                         PonPokemon(ugPokedex.Children[1] as PokemonPokedex);
-                        Title = "Pokedex -" + rom.NombreRom;
+                        Title = "Pokédex -" + rom.NombreRom;
                     }
                     catch (Exception ex)
                     {
@@ -262,13 +271,13 @@ namespace Pokedex
             evSelectorDefensaEspecial.SelectedIndex = (int)pokemonActual.Pokemon.DefensaEspecialEvs;
             txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
 
-                if(pokemonActual.Pokemon.Descripcion!=null)
-                      txtNombreEspecie.Text = pokemonActual.Pokemon.Descripcion.NombreEspecie;
-                else
-                    txtNombreEspecie.Text = "No tiene...";
-                txtNombreEspecie.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
+            if (pokemonActual.Pokemon.Descripcion != null)
+                txtNombreEspecie.Text = pokemonActual.Pokemon.Descripcion.NombreEspecie;
+            else
+                txtNombreEspecie.Text = "No tiene...";
+            txtNombreEspecie.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
 
-              txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
+            txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
 
             bmpAnimated = pokemonActual.Pokemon.Sprites.GetAnimacionImagenFrontal();
             bmpAnimated.FrameChanged += (s, frameActual) =>
@@ -303,16 +312,18 @@ namespace Pokedex
             txtDescripcion.TextChanged += txtDescripcion_TextChanged;
             txtDescripcion2.TextChanged += txtDescripcion_TextChanged;
             //items
-            try
-            {
-                cmbObjeto1.SelectedIndex = pokemonActual.Pokemon.Objeto1;
+               cmbObjeto1.SelectedIndex = pokemonActual.Pokemon.Objeto1;
                 cmbObjeto2.SelectedIndex = pokemonActual.Pokemon.Objeto2;
-            }
-            catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
-                     //tipos
-                     //  cmbTipo1.SelectedItem = pokemonActual.Pokemon.Tipo1;
-                     //cmbTipo2.SelectedItem = pokemonActual.Pokemon.Tipo2;
-                     //stats
+            //grupo huevo
+            cmbGrupoHuevo1.SelectedIndex =(int) pokemonActual.Pokemon.GrupoHuevo1;
+            cmbGrupoHuevo2.SelectedIndex = (int)pokemonActual.Pokemon.GrupoHuevo2;
+            //tipos
+            cmbTipo1.SelectedIndex = pokemonActual.Pokemon.Tipo1;
+            cmbTipo2.SelectedIndex = pokemonActual.Pokemon.Tipo2;
+            //habilidades
+            cmbHabiliad1.SelectedIndex = pokemonActual.Pokemon.Habilidad1;
+            cmbHabiliad2.SelectedIndex = pokemonActual.Pokemon.Habilidad2;
+            //stats
             txtHp.Text = pokemonActual.Pokemon.Hp + "";
             txtAtaque.Text = pokemonActual.Pokemon.Ataque + "";
             txtDefensa.Text = pokemonActual.Pokemon.Defensa + "";
@@ -356,25 +367,24 @@ namespace Pokedex
                 pokemonActual.Pokemon.AtaqueEspecialEvs = (Pokemon.NivelEvs)evSelectorAtaqueEspecial.SelectedIndex;
                 pokemonActual.Pokemon.DefensaEspecialEvs = (Pokemon.NivelEvs)evSelectorDefensaEspecial.SelectedIndex;
                 //descripcion
-                   if (pokemonActual.Pokemon.Descripcion.Descripcion != txtDescripcion.Text)
-                     pokemonActual.Pokemon.Descripcion.Descripcion.Texto = txtDescripcion.Text;
+                if (pokemonActual.Pokemon.Descripcion.Descripcion != txtDescripcion.Text)
+                    pokemonActual.Pokemon.Descripcion.Descripcion.Texto = txtDescripcion.Text;
                 if (pokemonActual.Pokemon.Descripcion.NombreEspecie != txtNombreEspecie.Text)
-                  pokemonActual.Pokemon.Descripcion.NombreEspecie.Texto = txtNombreEspecie.Text;
+                    pokemonActual.Pokemon.Descripcion.NombreEspecie.Texto = txtNombreEspecie.Text;
+                //grupo huevo
+                pokemonActual.Pokemon.GrupoHuevo1 = (Pokemon.GrupoHuevo)cmbGrupoHuevo1.SelectedIndex;
+                pokemonActual.Pokemon.GrupoHuevo2 = (Pokemon.GrupoHuevo)cmbGrupoHuevo2.SelectedIndex;
                 //items
-                try
-                {
-                    pokemonActual.Pokemon.Objeto1 = cmbObjeto1.SelectedIndex;
-                    pokemonActual.Pokemon.Objeto2 = cmbObjeto2.SelectedIndex;
-                }
-                catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
-                         //tipos
-                try
-                {
-                    pokemonActual.Pokemon.Tipo1 = (byte)cmbTipo1.SelectedIndex;
-                    pokemonActual.Pokemon.Tipo2 = (byte)cmbTipo2.SelectedIndex;
-                }
-                catch { }//de momento lo dejo asi para que no hayan problemas hasta arreglarlo :D
-                         //stats
+
+                pokemonActual.Pokemon.Objeto1 = cmbObjeto1.SelectedIndex;
+                pokemonActual.Pokemon.Objeto2 = cmbObjeto2.SelectedIndex;
+                pokemonActual.Pokemon.SetObjetosEnLosStats(cmbObjeto1.Items.Count);
+                pokemonActual.Pokemon.Tipo1 = (byte)cmbTipo1.SelectedIndex;
+                pokemonActual.Pokemon.Tipo2 = (byte)cmbTipo2.SelectedIndex;
+                pokemonActual.Pokemon.Habilidad1 = (byte)cmbHabiliad1.SelectedIndex;
+                pokemonActual.Pokemon.Habilidad2 = (byte)cmbHabiliad2.SelectedIndex;
+
+                //stats
                 pokemonActual.Pokemon.Hp = Convert.ToByte(txtHp.Text);
                 pokemonActual.Pokemon.Ataque = Convert.ToByte(txtAtaque.Text);
                 pokemonActual.Pokemon.Defensa = Convert.ToByte(txtDefensa.Text);

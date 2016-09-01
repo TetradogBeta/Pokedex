@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pokedex"
         mc:Ignorable="d"
-        Title="Pokedex" Height="318" Width="525">
+        Title="Pokédex" Height="318" Width="525">
     <Grid Background="White"  >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="163*"/>
@@ -27,7 +27,7 @@
 
         <Grid Grid.Column="1">
             <TabControl Background="White">
-                <TabItem  Header="Pokedex">
+                <TabItem  Header="Pokédex">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -70,7 +70,7 @@
                     </Grid>
 
                 </TabItem>
-                <TabItem  Header="Información Básica" >
+                <TabItem  Header="Información básica" >
                     <Viewbox>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -196,7 +196,16 @@
                         </Grid>
                     </Viewbox>
                 </TabItem>
-                <TabItem Header="Imagenes">
+                <TabItem Header="Más información">
+                    <StackPanel>
+                        <ComboBox x:Name="cmbHabiliad1"/>
+                        <ComboBox x:Name="cmbHabiliad2"/>
+
+                        <ComboBox x:Name="cmbGrupoHuevo1"/>
+                        <ComboBox x:Name="cmbGrupoHuevo2"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Imágenes">
                     <Viewbox>
                         <Grid Height="358" Width="485">
                             <Grid.RowDefinitions>
@@ -236,7 +245,7 @@
                         </Grid>
                     </Viewbox>
                 </TabItem>
-                <TabItem Header="Movimientos"></TabItem>
+                
 
             </TabControl>
         </Grid>
