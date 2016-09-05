@@ -29,13 +29,10 @@ namespace Pokedex
     {
         //problema para detectar 
         RomPokemon rom;
-        Edicion edicion;
-        CompilacionRom.Compilacion compilacion;
+        RomData romData;
+
         PokemonPokedex pokemonActual;
-        Objeto[] objetos;
         BloqueImagen hueboSprite;
-        Tipo[] tipos;
-        Habilidad[] habilidades;
         System.Drawing.Color colorSelected;
         bool hayCambios;
         private bool hayCambiosPokemonActual;
@@ -73,11 +70,15 @@ namespace Pokedex
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Hacer BackUp";
-            opcionMenu.Click += (s, e) => rom.BackUp();
+            opcionMenu.Click += (s, e) => {
+                RomPokemon romBackUp = new RomPokemon(new FileInfo(rom.BackUp()));
+                RomData.SetRomData(romBackUp, romData);
+                romBackUp.Guardar();//guardo los datos cambiados en el backup
+            };
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Guardar cambios";
-            opcionMenu.Click += (s, e) => { rom.Guardar(); hayCambios = false; };
+            opcionMenu.Click += (s, e) => { RomData.SetRomData(rom, romData); rom.Guardar(); hayCambios = false; };
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
@@ -159,8 +160,8 @@ namespace Pokedex
 
         private void GuardaRom(object sender, EventArgs e)
         {
-            if (!System.Diagnostics.Debugger.IsAttached)
-                GuardaSiHayCambios();
+
+            GuardaSiHayCambios();
             Application.Current.Shutdown();
         }
 
@@ -185,21 +186,17 @@ namespace Pokedex
                     try
                     {
                         rom = romCargada;
-                        edicion = Edicion.GetEdicion(rom);
-                        compilacion = CompilacionRom.GetCompilacion(rom, edicion);
-                        objetos = Objeto.GetObjetos(rom, edicion, compilacion);
-                        tipos = Tipo.GetTipos(rom, edicion, compilacion);
-                        habilidades = Habilidad.GetHabilidades(rom, edicion, compilacion);
-                        cmbHabiliad1.ItemsSource = habilidades;
-                        cmbHabiliad2.ItemsSource = habilidades;
-                        cmbObjeto2.ItemsSource = objetos;
-                        cmbObjeto1.ItemsSource = objetos;
-                        cmbTipo1.ItemsSource = tipos;
-                        cmbTipo2.ItemsSource = tipos;
+                        romData = RomData.GetRomData(rom);
+                        cmbHabiliad1.ItemsSource = romData.Habilidades;
+                        cmbHabiliad2.ItemsSource = romData.Habilidades;
+                        cmbObjeto2.ItemsSource = romData.Objetos;
+                        cmbObjeto1.ItemsSource = romData.Objetos;
+                        cmbTipo1.ItemsSource = romData.Tipos;
+                        cmbTipo2.ItemsSource = romData.Tipos;
 
-                        totalEntradas = DescripcionPokedex.TotalEntradas(rom, edicion, compilacion);
+                        totalEntradas = DescripcionPokedex.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
-                        pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, 0, totalEntradas));//para coger la pokedex se usa el orden nacional no el de la gameFreak
+                        pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, romData.Edicion, romData.Compilacion, 0, totalEntradas));//para coger la pokedex se usa el orden nacional no el de la gameFreak
                         pokemon.Selected += PonPokemon;
                         pokemon.Pokemon.Descripcion = DescripcionPokedex.GetDescripcionPokedex(rom, 0);
                         pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
@@ -208,7 +205,7 @@ namespace Pokedex
                         {
                             try
                             {
-                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, edicion, compilacion, i, totalEntradas));
+                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, romData.Edicion, romData.Compilacion, i, totalEntradas));
                                 pokemon.Selected += PonPokemon;
                                 ugPokedex.Children.Add(pokemon);
                             }
@@ -243,7 +240,10 @@ namespace Pokedex
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     ActualizoDatosPokemon();
-                    rom.Guardar();
+                    RomData.SetRomData(rom, romData);
+                    if (!System.Diagnostics.Debugger.IsAttached)
+                        rom.Guardar();
+                    else rom.BackUp();
 
                 }
             hayCambios = false;
@@ -336,7 +336,7 @@ namespace Pokedex
             rbt_Checked();
 
             //img2
-            if (edicion.Abreviacion != Edicion.ABREVIACIONESMERALDA)
+            if (romData.Edicion.Abreviacion != Edicion.ABREVIACIONESMERALDA)
             {
                 imgFrontal2.SetImage(Colors.White.ToBitmap(1, 1));
             }
@@ -353,7 +353,7 @@ namespace Pokedex
                 pokemonActual.Pokemon.Sprites.PaletaShiny.ColoresPaleta = pltShiny.Colors;
                 pokemonActual.Pokemon.Sprites.ImagenFrontalNormal = imgFrontal.ToBitmap();
                 pokemonActual.Pokemon.Sprites.ImagenTraseraNormal = imgBack.ToBitmap();
-                if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
+                if (romData.Edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     ((SpriteEsmeralda)pokemonActual.Pokemon.Sprites).ImagenFrontal2Normal = imgFrontal2.ToBitmap();
 
                 pokemonActual.Pokemon.AtaqueEvs = (Pokemon.NivelEvs)evSelectorAtaque.SelectedIndex;
@@ -425,7 +425,7 @@ namespace Pokedex
                     imgPokemonMasInfo.Source = imgFrontal.Source;
 
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltNormal.Colors));
-                    if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
+                    if (romData.Edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     {
                         imgFrontal2.SetImage(((SpriteEsmeralda)pokemonActual.Pokemon.Sprites).GetCustomImagenFrontal2(pltNormal.Colors));
                     }
@@ -438,7 +438,7 @@ namespace Pokedex
                 {
                     imgFrontal.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenFrontal(pltShiny.Colors));
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltShiny.Colors));
-                    if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
+                    if (romData.Edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     {
 
                         imgFrontal2.SetImage(((SpriteEsmeralda)pokemonActual.Pokemon.Sprites).GetCustomImagenFrontal2(pltShiny.Colors));
@@ -460,7 +460,7 @@ namespace Pokedex
                     imgFrontal.Source=pokemonActual.imgPokemon.Source;
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltNormal.Colors));
                     imgInfoBasicaPkm.Source = imgFrontal.Source;
-                    if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
+                    if (romData.Edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     {
                         imgFrontal2.SetImage(((SpriteEsmeralda)pokemonActual.Pokemon.Sprites).GetCustomImagenFrontal2(pltNormal.Colors));
                     }
@@ -473,7 +473,7 @@ namespace Pokedex
                 {
                     imgFrontal.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenFrontal(pltShiny.Colors));
                     imgBack.SetImage(pokemonActual.Pokemon.Sprites.GetCustomImagenTrasera(pltShiny.Colors));
-                    if (edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
+                    if (romData.Edicion.Abreviacion == Edicion.ABREVIACIONESMERALDA)
                     {
                         imgFrontal2.SetImage(((SpriteEsmeralda)pokemonActual.Pokemon.Sprites).GetCustomImagenFrontal2(pltShiny.Colors));
                     }
