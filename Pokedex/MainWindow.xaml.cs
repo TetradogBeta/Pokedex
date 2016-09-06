@@ -193,7 +193,15 @@ namespace Pokedex
                         cmbObjeto1.ItemsSource = romData.Objetos;
                         cmbTipo1.ItemsSource = romData.Tipos;
                         cmbTipo2.ItemsSource = romData.Tipos;
+                      /*  PokeballBattle[] pokeballs = PokeballBattle.GetPokeballsBattle(rom, romData.Edicion, romData.Compilacion);
+                        System.Windows.Controls.Image imgPokeball;
 
+                        for (int i = 0; i < pokeballs.Length; i++)
+                        {
+                            imgPokeball = new System.Windows.Controls.Image();
+                            imgPokeball.SetImage(pokeballs[i].Icono[0]);//hacer conversion de bloqueImagen a Bitmap devolviendo img[0]
+                            ugPokedex.Children.Add(imgPokeball);
+                        }*/
                         totalEntradas = DescripcionPokedex.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
                         pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, romData.Edicion, romData.Compilacion, 0, totalEntradas));//para coger la pokedex se usa el orden nacional no el de la gameFreak
