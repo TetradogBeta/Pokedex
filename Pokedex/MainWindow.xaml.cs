@@ -28,7 +28,7 @@ namespace Pokedex
     public partial class MainWindow : Window
     {
         //problema para detectar 
-        RomPokemon rom;
+        RomGBA rom;
         RomData romData;
 
         PokemonPokedex pokemonActual;
@@ -71,7 +71,7 @@ namespace Pokedex
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Hacer BackUp";
             opcionMenu.Click += (s, e) => {
-                RomPokemon romBackUp = new RomPokemon(new FileInfo(rom.BackUp()));
+                RomGBA romBackUp = new RomGBA(new FileInfo(rom.BackUp()));
                 RomData.SetRomData(romBackUp, romData);
                 romBackUp.Guardar();//guardo los datos cambiados en el backup
             };
@@ -169,14 +169,14 @@ namespace Pokedex
         {
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
-            RomPokemon romCargada;
+            RomGBA romCargada;
 
             int totalEntradas;
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
             if (opnRom.ShowDialog().Value)
             {
-                romCargada = new RomPokemon(new FileInfo(opnRom.FileName));
+                romCargada = new RomGBA(new FileInfo(opnRom.FileName));
 
                 try
                 {
