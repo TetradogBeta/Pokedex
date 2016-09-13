@@ -278,7 +278,8 @@ namespace Pokedex
             evSelectorAtaqueEspecial.SelectedIndex = (int)pokemonActual.Pokemon.AtaqueEspecialEvs;
             evSelectorDefensaEspecial.SelectedIndex = (int)pokemonActual.Pokemon.DefensaEspecialEvs;
             txtNombreEspecie.TextChanged -= txtNombreEspecie_TextChanged;
-
+            if(pokemonActual.Pokemon.Huella!=null)
+            imgHuella.SetImage(pokemonActual.Pokemon.Huella.Imagen);
             if (pokemonActual.Pokemon.Descripcion != null)
                 txtNombreEspecie.Text = pokemonActual.Pokemon.Descripcion.NombreEspecie;
             else

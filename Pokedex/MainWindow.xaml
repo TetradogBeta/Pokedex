@@ -57,7 +57,7 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBox  x:Name="txtNombreEspecie" TextChanged="txtNombreEspecie_TextChanged"/>
-
+                                    <Image x:Name="imgHuella" Grid.Row="1"/>
                                 </Grid>
 
                             </Grid>
