@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.Drawing;
 using PokemonGBAFrameWork;
 using System.IO;
-
+using Gabriel.Cat.Extension;
 namespace Pokedex
 {
     /// <summary>
@@ -170,7 +170,7 @@ namespace Pokedex
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
             RomGBA romCargada;
-
+           
             int totalEntradas;
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
@@ -195,7 +195,13 @@ namespace Pokedex
                         
                         cmbTipo1.ItemsSource = romData.Tipos;
                         cmbTipo2.ItemsSource = romData.Tipos;
-
+                        if (System.Diagnostics.Debugger.IsAttached)
+                        {
+                            string sha3Hash = romData.Pokedex[1].Sprites.ImagenTrasera.DatosDescomprimidos.SHA3();
+                            romData.Pokedex[1].Sprites.ImagenFrontal.DatosComprimidos = romData.Pokedex[1].Sprites.ImagenTrasera.DatosComprimidos;
+                            if (!romData.Pokedex[1].Sprites.ImagenFrontal.DatosDescomprimidos.SHA3Equals(romData.Pokedex[1].Sprites.ImagenTrasera.DatosDescomprimidos) ||!romData.Pokedex[1].Sprites.ImagenTrasera.DatosDescomprimidos.SHA3Equals(sha3Hash))
+                                System.Diagnostics.Debugger.Break();
+                        }
                         cmbObjeto1.Items.Clear();
                         for (int i = 0; i < romData.Objetos.Count; i++)
                         {
@@ -204,16 +210,16 @@ namespace Pokedex
                         cmbObjeto2.ItemsSource = cmbObjeto1.Items;
                         totalEntradas = DescripcionPokedex.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
-                        pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, romData.Edicion, romData.Compilacion, 0, totalEntradas));//para coger la pokedex se usa el orden nacional no el de la gameFreak
+                        pokemon = new PokemonPokedex(romData.Pokedex[0]);//para coger la pokedex se usa el orden nacional no el de la gameFreak
                         pokemon.Selected += PonPokemon;
                         pokemon.Pokemon.Descripcion = DescripcionPokedex.GetDescripcionPokedex(rom, 0);
                         pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
                         ugPokedex.Children.Add(pokemon);
-                        for (int i = 1, f = Pokemon.TotalPokemon(rom); i < f; i++)
+                        for (int i = 1, f = romData.Pokedex.Count; i < f; i++)
                         {
                             try
                             {
-                                pokemon = new PokemonPokedex(Pokemon.GetPokemon(rom, romData.Edicion, romData.Compilacion, i, totalEntradas));
+                                pokemon =new PokemonPokedex(romData.Pokedex[i]);
                                 pokemon.Selected += PonPokemon;
                                 ugPokedex.Children.Add(pokemon);
                             }
