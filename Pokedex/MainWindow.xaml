@@ -228,8 +228,7 @@
                                     <ColumnDefinition Width="5*"/>
                                     <ColumnDefinition Width="45*"/>
                                     <ColumnDefinition Width="126*"/>
-                                    <ColumnDefinition Width="126*"/>
-                                    <ColumnDefinition Width="126*"/>
+       
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
@@ -247,10 +246,9 @@
                                     <wpf:ColorTable x:Name="pltShiny" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected"/>
                                     <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
                                 </Grid>
-                                <Image Grid.Column="3" x:Name="imgBack"/>
-
-                                <Image Grid.Column="4" x:Name="imgFrontal"/>
-                                <Image Grid.Column="5" x:Name="imgFrontal2"/>
+                                <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel  x:Name="stkImgs" Orientation="Horizontal"/>
+                                </ScrollViewer>
                             </Grid>
                         </Grid>
                     </Viewbox>
