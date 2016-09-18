@@ -416,7 +416,7 @@ namespace Pokedex
 
         private void rbt_Checked(object sender = null, RoutedEventArgs e = null)
         {
-            System.Windows.Controls.Image img;
+
             Bitmap bmpImg;
             if (pokemonActual != null)
             {
@@ -433,26 +433,14 @@ namespace Pokedex
                     }
                 }
                 //pongo las imgs
-                stkImgs.Children.Clear();
-                for (int i = 0; i < pokemonActual.Pokemon.Sprites.ImagenFrontal.Length; i++)
-                {
-                    img = new System.Windows.Controls.Image();
-                    img.SetImage(pokemonActual.Pokemon.Sprites.ImagenFrontal[i] + (rbtNormal.IsChecked.Value?pltNormal.Colors:pltShiny.Colors));
-                    stkImgs.Children.Add(img);
-                }
-                for (int i = 0; i < pokemonActual.Pokemon.Sprites.ImagenTrasera.Length; i++)
-                {
-                    img = new System.Windows.Controls.Image();
-                    img.SetImage(pokemonActual.Pokemon.Sprites.ImagenTrasera[i] + (rbtNormal.IsChecked.Value ? pltNormal.Colors : pltShiny.Colors));
-                    stkImgs.Children.Add(img);
-                }
+                PonImagenes(rbtNormal.IsChecked.Value ? pltNormal : pltShiny);
 
             }
         }
 
         private void plt_ColorChanged(object sender, Gabriel.Cat.Wpf.ColorChangedArgs e)
         {
-            System.Windows.Controls.Image img;
+            
             ColorTable plt = sender as ColorTable;
             if (pltNormal == sender)
             {
@@ -467,23 +455,27 @@ namespace Pokedex
 
             }
             //pongo las imgs
-            stkImgs.Children.Clear();
+            PonImagenes(plt);
+            hayCambios = true;
+            hayCambiosPokemonActual = true;
+        }
+        private void PonImagenes(ColorTable paleta)
+        {
+            System.Windows.Controls.Image img;
+            ugImgs.Children.Clear();
             for (int i = 0; i < pokemonActual.Pokemon.Sprites.ImagenFrontal.Length; i++)
             {
                 img = new System.Windows.Controls.Image();
-                img.SetImage(pokemonActual.Pokemon.Sprites.ImagenFrontal[i]+plt.Colors);
-                stkImgs.Children.Add(img);
+                img.SetImage(pokemonActual.Pokemon.Sprites.ImagenFrontal[i] + paleta.Colors);
+                ugImgs.Children.Add(img);
             }
             for (int i = 0; i < pokemonActual.Pokemon.Sprites.ImagenTrasera.Length; i++)
             {
                 img = new System.Windows.Controls.Image();
-                img.SetImage(pokemonActual.Pokemon.Sprites.ImagenTrasera[i]+plt.Colors);
-                stkImgs.Children.Add(img);
+                img.SetImage(pokemonActual.Pokemon.Sprites.ImagenTrasera[i] + paleta.Colors);
+                ugImgs.Children.Add(img);
             }
-            hayCambios = true;
-            hayCambiosPokemonActual = true;
         }
-
         private void plt_ColorSelected(object sender, Gabriel.Cat.Wpf.ColorSelectedArgs e)
         {
             colorSelected = e.Color;

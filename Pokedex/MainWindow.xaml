@@ -202,58 +202,57 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                    <StackPanel>
+                        <StackPanel>
                             <TextBlock Text="Habilidades"/>
                             <ComboBox x:Name="cmbHabiliad1"/>
-                        <ComboBox x:Name="cmbHabiliad2"/>
+                            <ComboBox x:Name="cmbHabiliad2"/>
                             <TextBlock Text="Grupo huevo"/>
                             <ComboBox x:Name="cmbGrupoHuevo1"/>
-                        <ComboBox x:Name="cmbGrupoHuevo2"/>
-                    </StackPanel>
+                            <ComboBox x:Name="cmbGrupoHuevo2"/>
+                        </StackPanel>
                         <StackPanel Grid.Column="1">
                             <Image x:Name="imgPokemonMasInfo"/>
                         </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Imágenes">
-                    <Viewbox>
-                        <Grid Height="358" Width="485">
+              
+                        <Grid >
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="158"/>
-                                <RowDefinition Height="282"/>
+                                <RowDefinition Height="113*"/>
+                                <RowDefinition Height="327*"/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
+                            <Grid Grid.Row="1" >
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="45*"/>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition Width="45*"/>
-                                    <ColumnDefinition Width="126*"/>
-       
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="32*"/>
-                                        <RowDefinition Height="7*"/>
+                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="50"/>
                                     </Grid.RowDefinitions>
                                     <RadioButton Grid.Row="1" x:Name="rbtNormal" IsChecked="True" Checked="rbt_Checked" GroupName="paletas"/>
                                     <wpf:ColorTable x:Name="pltNormal" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected" />
                                 </Grid>
                                 <Grid Grid.Column="2">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="32*"/>
-                                        <RowDefinition Height="7*"/>
+                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="50"/>
                                     </Grid.RowDefinitions>
                                     <wpf:ColorTable x:Name="pltShiny" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected"/>
                                     <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
                                 </Grid>
-                                <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                    <StackPanel  x:Name="stkImgs" Orientation="Horizontal"/>
-                                </ScrollViewer>
+                                <UniformGrid Grid.Column="3" x:Name="ugImgs" Columns="3"/>
+                             
                             </Grid>
                         </Grid>
-                    </Viewbox>
+                  
                 </TabItem>
-                
+
 
             </TabControl>
         </Grid>
