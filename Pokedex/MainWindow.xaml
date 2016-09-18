@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pokedex"
         mc:Ignorable="d"
-        Title="Pokédex" Height="318" Width="525">
+        Title="Pokédex" Height="362.75" Width="709.327">
     <Grid Background="White"  >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="163*"/>
@@ -27,7 +27,7 @@
 
         <Grid Grid.Column="1">
             <TabControl Background="White">
-                <TabItem  Header="Pokédex">
+                <TabItem  Header="Informacion Pokédex">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -215,42 +215,40 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Imágenes">
-              
-                        <Grid >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="113*"/>
-                                <RowDefinition Height="327*"/>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="1" >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="5"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="*"/>
+                <TabItem Header="Sprites">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
 
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="100"/>
-                                        <RowDefinition Height="50"/>
-                                    </Grid.RowDefinitions>
-                                    <RadioButton Grid.Row="1" x:Name="rbtNormal" IsChecked="True" Checked="rbt_Checked" GroupName="paletas"/>
-                                    <wpf:ColorTable x:Name="pltNormal" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected" />
-                                </Grid>
-                                <Grid Grid.Column="2">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="100"/>
-                                        <RowDefinition Height="50"/>
-                                    </Grid.RowDefinitions>
-                                    <wpf:ColorTable x:Name="pltShiny" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected"/>
-                                    <RadioButton Grid.Row="1" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
-                                </Grid>
-                                <UniformGrid Grid.Column="3" x:Name="ugImgs" Columns="3"/>
-                             
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <RadioButton Grid.Row="2" x:Name="rbtNormal" IsChecked="True" Checked="rbt_Checked" GroupName="paletas"/>
+                                <wpf:ColorTable Grid.Row="1" x:Name="pltNormal" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected" />
                             </Grid>
+                            <Grid Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <wpf:ColorTable Grid.Row="1" x:Name="pltShiny" ColorChanged="plt_ColorChanged" ColorSelected="plt_ColorSelected"/>
+                                <RadioButton Grid.Row="2" x:Name="rbtShiny" Checked="rbt_Checked" GroupName="paletas"/>
+                            </Grid>
+                            <UniformGrid Grid.Column="3" x:Name="ugImgs" Columns="3"/>
+
                         </Grid>
-                  
+                    
+
                 </TabItem>
 
 

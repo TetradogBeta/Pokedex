@@ -71,7 +71,7 @@ namespace Pokedex
             opcionMenu.Click += (s, e) => PideRom();
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
-            opcionMenu.Header = "Hacer BackUp";
+            opcionMenu.Header = "Hacer BackUp datos en memoria";
             opcionMenu.Click += (s, e) => {
                 RomGBA romBackUp = new RomGBA(new FileInfo(rom.BackUp()));
                 RomData.SetRomData(romBackUp, romData);
@@ -178,6 +178,7 @@ namespace Pokedex
             GuardaSiHayCambios();
             if (opnRom.ShowDialog().Value)
             {
+               
                 romCargada = new RomGBA(new FileInfo(opnRom.FileName));
 
                 try
@@ -190,7 +191,8 @@ namespace Pokedex
 
                         rom = romCargada;
                         Title = "Pokédex -" + rom.NombreRom;
-                        romData = RomData.GetRomData(rom);
+                        romData = RomData.GetRomData(rom);//772 milisegundos
+                        
                         cmbHabiliad1.ItemsSource = romData.Habilidades;
                         cmbHabiliad2.ItemsSource = romData.Habilidades;
 
@@ -204,14 +206,15 @@ namespace Pokedex
                         }
                         cmbObjeto2.ItemsSource = cmbObjeto1.Items;
                         totalEntradas = DescripcionPokedex.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
+                        
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
                         pokemon = new PokemonPokedex(romData.Pokedex[0]);//para coger la pokedex se usa el orden nacional no el de la gameFreak
                         pokemon.Selected += PonPokemon;
                         pokemon.Pokemon.Descripcion = DescripcionPokedex.GetDescripcionPokedex(rom, 0);
                         pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
                         ugPokedex.Children.Add(pokemon);
-
-                       for (int i = 1, f = romData.Pokedex.Count; i < f; i++)
+                        
+                        for (int i = 1, f = romData.Pokedex.Count; i < f; i++)
                         {
                             try
                             {
@@ -225,7 +228,6 @@ namespace Pokedex
                         pokedexCargada = ugPokedex.Children.OfType<PokemonPokedex>().ToArray();
                         ugPokedex.Children.Sort();
                         PonPokemon(pokedexCargada[0]);
-                        
                     }
                     catch (Exception ex)
                     {
