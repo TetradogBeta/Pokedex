@@ -178,7 +178,7 @@ namespace Pokedex
             GuardaSiHayCambios();
             if (opnRom.ShowDialog().Value)
             {
-               
+
                 romCargada = new RomGBA(new FileInfo(opnRom.FileName));
 
                 try
