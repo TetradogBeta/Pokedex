@@ -183,7 +183,7 @@ namespace Pokedex
 
                 try
                 {
-
+                    ugPokedex.BeginInit();
                     ugPokedex.Children.Clear();
                     pokemonActual = null;
                     try
@@ -213,7 +213,7 @@ namespace Pokedex
                         pokemon.Pokemon.Descripcion = DescripcionPokedex.GetDescripcionPokedex(rom, 0);
                         pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
                         ugPokedex.Children.Add(pokemon);
-                        
+                       
                         for (int i = 1, f = romData.Pokedex.Count; i < f; i++)
                         {
                             try
@@ -232,6 +232,11 @@ namespace Pokedex
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debugger.Break();
+                    }
+                    finally
+                    {
+                        ugPokedex.EndInit();
+                      
                     }
                 }
                 catch
