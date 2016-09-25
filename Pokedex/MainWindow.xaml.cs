@@ -290,11 +290,20 @@ namespace Pokedex
             if(pokemonActual.Pokemon.Huella!=null)
             imgHuella.SetImage(pokemonActual.Pokemon.Huella.Imagen);
             if (pokemonActual.Pokemon.Descripcion != null)
+            {
                 txtNombreEspecie.Text = pokemonActual.Pokemon.Descripcion.NombreEspecie;
+                txtAltura.Text = (pokemonActual.Pokemon.Descripcion.Altura/10.0)+"";
+                txtPeso.Text = (pokemonActual.Pokemon.Descripcion.Peso / 10.0) + "";
+            }
             else
+            {
                 txtNombreEspecie.Text = "No tiene...";
+                txtAltura.Text = "";
+                txtPeso.Text = "";
+            }
             txtNombreEspecie.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
-
+            txtAltura.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
+            txtPeso.IsReadOnly = pokemonActual.Pokemon.Descripcion == null;
             txtNombreEspecie.TextChanged += txtNombreEspecie_TextChanged;
 
             bmpAnimated = pokemonActual.Pokemon.Sprites.GetAnimacionImagenFrontal();
