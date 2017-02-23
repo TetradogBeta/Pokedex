@@ -59,17 +59,23 @@
                                     <TextBox  x:Name="txtNombreEspecie" TextChanged="txtNombreEspecie_TextChanged"/>
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="99*"/>
+                                           
                                             <ColumnDefinition Width="137*"/>
                                             <ColumnDefinition Width="60*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="1">
+                                        <Grid Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
-                                            <TextBox x:Name="txtPeso"/>
-                                            <TextBox x:Name="txtAltura" Grid.Row="1"/>
+                                            <TextBox x:Name="txtPeso" Grid.Column="1"/>
+                                            <TextBox x:Name="txtAltura" Grid.Column="1" Grid.Row="1"/>
+                                            <TextBlock Text="Peso (kg)" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Altura (m)" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" />
                                         </Grid>
                                         <Image x:Name="imgHuella" Grid.Column="2" />
                                     </Grid>

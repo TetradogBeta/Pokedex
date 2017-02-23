@@ -74,13 +74,13 @@ namespace Pokedex
             opcionMenu.Header = "Hacer BackUp datos en memoria";
             opcionMenu.Click += (s, e) => {
                 RomGBA romBackUp = new RomGBA(new FileInfo(rom.BackUp()));
-                RomData.SetRomData(romBackUp, romData);
+                RomData.SetRomData(romData);
                 romBackUp.Guardar();//guardo los datos cambiados en el backup
             };
             menuContextual.Items.Add(opcionMenu);
             opcionMenu = new MenuItem();
             opcionMenu.Header = "Guardar cambios";
-            opcionMenu.Click += (s, e) => { RomData.SetRomData(rom, romData); rom.Guardar(); hayCambios = false; };
+            opcionMenu.Click += (s, e) => { RomData.SetRomData(romData); rom.Guardar(); hayCambios = false; };
             menuContextual.Items.Add(opcionMenu);
             ContextMenu = menuContextual;
             PideRom();
@@ -191,7 +191,7 @@ namespace Pokedex
 
                         rom = romCargada;
                         Title = "Pokédex -" + rom.NombreRom;
-                        romData = RomData.GetRomData(rom);//772 milisegundos
+                        romData =new RomData(rom);//772 milisegundos
                         
                         cmbHabiliad1.ItemsSource = romData.Habilidades;
                         cmbHabiliad2.ItemsSource = romData.Habilidades;
@@ -205,12 +205,12 @@ namespace Pokedex
                             cmbObjeto1.Items.Add(new ObjetoViewer(romData.Objetos[i]));  
                         }
                         cmbObjeto2.ItemsSource = cmbObjeto1.Items;
-                        totalEntradas = DescripcionPokedex.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
+                        totalEntradas = Descripcion.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
                         
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
                         pokemon = new PokemonPokedex(romData.Pokedex[0]);//para coger la pokedex se usa el orden nacional no el de la gameFreak
                         pokemon.Selected += PonPokemon;
-                        pokemon.Pokemon.Descripcion = DescripcionPokedex.GetDescripcionPokedex(rom, 0);
+                        pokemon.Pokemon.Descripcion = Descripcion.GetDescripcionPokedex(rom, 0);
                         pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
                         ugPokedex.Children.Add(pokemon);
                        
@@ -257,7 +257,7 @@ namespace Pokedex
                 if (MessageBox.Show("Desea guardar los cambios en la rom? ", "Importante", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     ActualizoDatosPokemon();
-                    RomData.SetRomData(rom, romData);
+                    RomData.SetRomData(romData);
                     if (!System.Diagnostics.Debugger.IsAttached)
                         rom.Guardar();
                     else rom.BackUp();
@@ -327,9 +327,9 @@ namespace Pokedex
             txtDescripcion2.TextChanged -= txtDescripcion_TextChanged;
             if (pokemonActual.Pokemon.Descripcion != null)
             {
-                txtDescripcion.Text = pokemonActual.Pokemon.Descripcion.Descripcion.Texto;
+                txtDescripcion.Text = pokemonActual.Pokemon.Descripcion.Pagina.Texto;
                 if (pokemonActual.Pokemon.Descripcion is DescripcionPokedexRubiZafiro)
-                    txtDescripcion2.Text = ((DescripcionPokedexRubiZafiro)pokemonActual.Pokemon.Descripcion).Descripcion2.Texto;
+                    txtDescripcion2.Text = ((DescripcionPokedexRubiZafiro)pokemonActual.Pokemon.Descripcion).Pagina2.Texto;
             }
             else
                 txtDescripcion.Text = "No tiene descripcion en la pokedex...";
@@ -381,8 +381,8 @@ namespace Pokedex
                 pokemonActual.Pokemon.AtaqueEspecialEvs = (Pokemon.NivelEvs)evSelectorAtaqueEspecial.SelectedIndex;
                 pokemonActual.Pokemon.DefensaEspecialEvs = (Pokemon.NivelEvs)evSelectorDefensaEspecial.SelectedIndex;
                 //descripcion
-                if (pokemonActual.Pokemon.Descripcion.Descripcion != txtDescripcion.Text)
-                    pokemonActual.Pokemon.Descripcion.Descripcion.Texto = txtDescripcion.Text;
+                if (pokemonActual.Pokemon.Descripcion.Pagina != txtDescripcion.Text)
+                    pokemonActual.Pokemon.Descripcion.Pagina.Texto = txtDescripcion.Text;
                 if (pokemonActual.Pokemon.Descripcion.NombreEspecie != txtNombreEspecie.Text)
                     pokemonActual.Pokemon.Descripcion.NombreEspecie.Texto = txtNombreEspecie.Text;
                 //grupo huevo
@@ -573,8 +573,8 @@ namespace Pokedex
         {
             hayCambios = true;
             hayCambiosPokemonActual = true;
-            if (txtNombreEspecie.Text.Length > (int)DescripcionPokedex.LongitudCampos.NombreEspecie)
-                txtNombreEspecie.Text = txtNombreEspecie.Text.Substring(0, (int)DescripcionPokedex.LongitudCampos.NombreEspecie);
+            if (txtNombreEspecie.Text.Length > (int)Descripcion.LongitudCampos.NombreEspecie)
+                txtNombreEspecie.Text = txtNombreEspecie.Text.Substring(0, (int)Descripcion.LongitudCampos.NombreEspecie);
         }
     }
 }
