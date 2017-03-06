@@ -172,8 +172,7 @@ namespace Pokedex
             OpenFileDialog opnRom = new OpenFileDialog();
             PokemonPokedex pokemon;
             RomGBA romCargada;
-           
-            int totalEntradas;
+
             opnRom.Filter = "gba|*.gba";
             GuardaSiHayCambios();
             if (opnRom.ShowDialog().Value)
@@ -205,8 +204,7 @@ namespace Pokedex
                             cmbObjeto1.Items.Add(new ObjetoViewer(romData.Objetos[i]));  
                         }
                         cmbObjeto2.ItemsSource = cmbObjeto1.Items;
-                        totalEntradas = Descripcion.TotalEntradas(rom, romData.Edicion, romData.Compilacion);
-                        
+                       
                         //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
                         pokemon = new PokemonPokedex(romData.Pokedex[0]);//para coger la pokedex se usa el orden nacional no el de la gameFreak
                         pokemon.Selected += PonPokemon;
@@ -218,9 +216,12 @@ namespace Pokedex
                         {
                             try
                             {
-                                pokemon =new PokemonPokedex(romData.Pokedex[i]);
-                                pokemon.Selected += PonPokemon;
-                                ugPokedex.Children.Add(pokemon);
+                                if (romData.Pokedex[i].EsUnPokemonValido)
+                                {
+                                    pokemon = new PokemonPokedex(romData.Pokedex[i]);
+                                    pokemon.Selected += PonPokemon;
+                                    ugPokedex.Children.Add(pokemon);
+                                }
                             }
                             catch { System.Diagnostics.Debugger.Break(); }
                         }
