@@ -191,7 +191,6 @@ namespace Pokedex
                         rom = romCargada;
                         Title = "Pokédex -" + rom.NombreRom;
                         romData =new RomData(rom);//772 milisegundos
-                        
                         cmbHabiliad1.ItemsSource = romData.Habilidades;
                         cmbHabiliad2.ItemsSource = romData.Habilidades;
 
@@ -204,14 +203,17 @@ namespace Pokedex
                             cmbObjeto1.Items.Add(new ObjetoViewer(romData.Objetos[i]));  
                         }
                         cmbObjeto2.ItemsSource = cmbObjeto1.Items;
-                       
-                        //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
-                        pokemon = new PokemonPokedex(romData.Pokedex[0]);//para coger la pokedex se usa el orden nacional no el de la gameFreak
-                        pokemon.Selected += PonPokemon;
-                        pokemon.Pokemon.Descripcion = Descripcion.GetDescripcionPokedex(rom, 0);
-                        pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
-                        ugPokedex.Children.Add(pokemon);
-                       
+
+                        try
+                        {
+                            //missigno es un pokemon especial porque el orden nacional no tiene...y coge el de Mew...y para poderlo tener correctamente lo pongo a mano
+                            pokemon = new PokemonPokedex(romData.Pokedex[0]);//para coger la pokedex se usa el orden nacional no el de la gameFreak
+                            pokemon.Selected += PonPokemon;
+                            pokemon.Pokemon.Descripcion = Descripcion.GetDescripcionPokedex(rom, 0);
+                            pokemon.Pokemon.OrdenPokedexNacional = 0;//le pongo el orden que le toca porque de forma auto coge el de mew...
+                            ugPokedex.Children.Add(pokemon);
+                        }
+                        catch { }
                         for (int i = 1, f = romData.Pokedex.Count; i < f; i++)
                         {
                             try
