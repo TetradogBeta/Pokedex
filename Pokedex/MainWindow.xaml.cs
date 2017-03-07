@@ -365,6 +365,9 @@ namespace Pokedex
             txtRatioCaptura.Text = pokemonActual.Pokemon.RatioCaptura + "";
             rbt_Checked();
 
+            lstAtaques.Items.Clear();
+            for (int i = 0; i < pokemonActual.Pokemon.AtaquesAprendidos.Ataques.Count; i++)
+                lstAtaques.Items.Add(new AtaqueAprendidoViewer(romData, pokemonActual.Pokemon, i));
 
             hayCambiosPokemonActual = false;
         }
