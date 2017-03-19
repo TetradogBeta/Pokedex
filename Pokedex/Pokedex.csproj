@@ -38,9 +38,6 @@
     <ApplicationIcon>Pokedex_Hoen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gabriel.Cat.Utilitats">
-      <HintPath>..\..\Gabriel.Cat.Utilitats\Gabriel.Cat.Utilitats\bin\Release\Gabriel.Cat.Utilitats.dll</HintPath>
-    </Reference>
     <Reference Include="Gabriel.Cat.Wpf">
       <HintPath>..\..\Gabriel.Cat.Wpf\Gabriel.Cat.Wpf\bin\Release\Gabriel.Cat.Wpf.dll</HintPath>
     </Reference>
@@ -146,9 +143,13 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PokemonGBAFrameWork\PokemonGBAFrameWork\PokemonGBAFrameWork.csproj">
-      <Project>{42256c23-1e9b-41e5-a5da-d3c6af6b824d}</Project>
+    <ProjectReference Include="..\..\..\Documents\SharpDevelop Projects\PokemonGBAFrameWork\PokemonGBAFrameWork\PokemonGBAFrameWork.csproj">
+      <Project>{52cf96db-a3aa-47d9-b0ba-7bb2834b68c7}</Project>
       <Name>PokemonGBAFrameWork</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Gabriel.Cat.Utilitats\Gabriel.Cat.Utilitats\Gabriel.Cat.Utilitats.csproj">
+      <Project>{6fdf9bb1-ae07-4820-beee-a2f52cfbe770}</Project>
+      <Name>Gabriel.Cat.Utilitats</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

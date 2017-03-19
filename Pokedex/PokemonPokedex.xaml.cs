@@ -48,7 +48,7 @@ namespace Pokedex
                 if (value == null)
                     throw new NullReferenceException();
                 pokemon = value;
-                imgPokemon.SetImage(pokemon.Sprites.ImagenFrontalNormal);
+                imgPokemon.SetImage(pokemon.Sprites.SpritesFrontales[0]);
             }
         }
         public override string ToString()

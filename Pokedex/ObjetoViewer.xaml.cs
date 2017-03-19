@@ -43,8 +43,8 @@ namespace Pokedex
             {
                 obj = value;
                 txtNombreObjeto.Text = obj.Nombre;
-                if(obj.ImagenObjeto!=null)
-                   imgObjeto.SetImage(obj.ImagenObjeto);
+                if(obj.Sprite!=null)
+                   imgObjeto.SetImage(obj.Sprite);
             }
         }
     }
