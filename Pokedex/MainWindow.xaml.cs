@@ -362,9 +362,9 @@ namespace Pokedex
 			rbt_Checked();
 
 			lstAtaques.Items.Clear();
-			for (int i = 0; i < pokemonActual.Pokemon.AtaquesAprendidos.Ataques.Count; i++)
+			/*for (int i = 0; i < pokemonActual.Pokemon.AtaquesAprendidos.Ataques.Count; i++)
 				lstAtaques.Items.Add(new AtaqueAprendidoViewer(rom, pokemonActual.Pokemon, i));
-
+			 */
 			hayCambiosPokemonActual = false;
 		}
 
@@ -440,7 +440,7 @@ namespace Pokedex
 			{
 				if (rbtNormal.IsChecked.Value)
 				{
-					bmpImg = pokemonActual.Pokemon.Sprites.SpritesFrontales[0]+new Paleta(pltNormal.Colors); 
+					bmpImg = pokemonActual.Pokemon.Sprites.SpritesFrontales[0]+new Paleta(pltNormal.Colors);
 					imgInfoBasicaPkm.SetImage(bmpImg);
 					imgPokemonMasInfo.SetImage(bmpImg);
 
